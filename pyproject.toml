@@ -1,0 +1,27 @@
+[project]
+name = "financial-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.28.1",
+    "langchain-core>=1.2.8",
+    "langchain-openai>=1.1.7",
+    "langgraph>=1.0.7",
+    "pydantic>=2.12.5",
+    "python-dotenv>=1.2.1",
+    "ruff>=0.15.0",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+# E: Error, F: Pyflakes, I: Isort 
+select = ["E", "F", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
