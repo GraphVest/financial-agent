@@ -1,7 +1,8 @@
 import json
-import os
+import logging
 from datetime import datetime
-from typing import Any, Dict, List, Union
+from pathlib import Path
+from typing import Any
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage, ToolMessage
 
@@ -15,32 +16,58 @@ class MarkdownLogger:
     - JSON (.json): For machine processing - contains metadata, messages, and extracted data
     """
 
-    def __init__(self, ticker: str):
-        # Ensure the logs directory exists
-        os.makedirs("logs", exist_ok=True)
+    def __init__(self, ticker: str, log_dir: Path | None = None, save_interval: int = 1):
+        """
+        Initialize the dual logger.
 
-        # Create a unique timestamped base filename
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.base_filename = f"logs/{ticker}_RESEARCH_{timestamp}"
+        Args:
+            ticker: Stock ticker symbol
+            log_dir: Directory to save logs (default: logs/ relative to source file)
+            save_interval: Save JSON every N messages (default: 1 = save every message)
+        """
+        # Capture timestamp once for consistency across all uses
+        now = datetime.now()
+        self.start_time = now.isoformat()
+        timestamp = now.strftime("%Y%m%d_%H%M%S")
         self.ticker = ticker
-        self.start_time = datetime.now().isoformat()
+
+        # Batch save configuration
+        self.save_interval = max(1, save_interval)  # Ensure at least 1
+        self._message_count = 0
+
+        # Use provided log_dir or default to 'logs' relative to this source file
+        if log_dir is None:
+            log_dir = Path(__file__).parent.parent / "logs"
+        self.log_dir = Path(log_dir)
+
+        # Ensure the logs directory exists
+        try:
+            self.log_dir.mkdir(parents=True, exist_ok=True)
+        except OSError as e:
+            logging.error(f"Failed to create log directory {self.log_dir}: {e}")
+            raise
 
         # Initialize filenames
-        self.md_filename = f"{self.base_filename}.md"
-        self.json_filename = f"{self.base_filename}.json"
+        self.base_filename = self.log_dir / f"{ticker}_RESEARCH_{timestamp}"
+        self.md_filename = self.base_filename.with_suffix(".md")
+        self.json_filename = self.base_filename.with_suffix(".json")
 
         # Initialize the Markdown file with a header
-        with open(self.md_filename, "w", encoding="utf-8") as f:
-            f.write(f"# 🕵️‍♂️ Financial Research Log: ${ticker}\n")
-            f.write(f"*Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*\n")
-            f.write(
-                f"*Raw Data Context:* [`{os.path.basename(self.json_filename)}`]"
-                f"(./{os.path.basename(self.json_filename)})\n\n"
-            )
-            f.write("---\n\n")
+        try:
+            with open(self.md_filename, "w", encoding="utf-8") as f:
+                f.write(f"# 🕵️‍♂️ Financial Research Log: ${ticker}\n")
+                f.write(f"*Date: {now.strftime('%Y-%m-%d %H:%M:%S')}*\n")
+                f.write(
+                    f"*Raw Data Context:* [`{self.json_filename.name}`]"
+                    f"(./{self.json_filename.name})\n\n"
+                )
+                f.write("---\n\n")
+        except IOError as e:
+            logging.error(f"Failed to initialize Markdown log file {self.md_filename}: {e}")
+            raise
 
         # Initialize the structured JSON data
-        self.json_data: Dict[str, Any] = {
+        self.json_data: dict[str, Any] = {
             "metadata": {
                 "ticker": ticker,
                 "timestamp": self.start_time,
@@ -61,15 +88,9 @@ class MarkdownLogger:
             f"📝 Dual Logger initialized:\n   - Human Log: {self.md_filename}\n   - Machine Data: {self.json_filename}"
         )
 
-    def _format_json(self, data: Union[str, Dict, List]) -> str:
-        """Helper to pretty-print JSON objects for the Markdown report."""
-        if isinstance(data, str):
-            try:
-                parsed = json.loads(data)
-                return json.dumps(parsed, indent=2)
-            except ValueError:
-                return data
-        return json.dumps(data, indent=2)
+    def flush(self):
+        """Force save JSON data to disk. Call this at end of session to ensure all data is saved."""
+        self._save_json()
 
     def _extract_tool_data(self, tool_name: str, content: Any):
         """Extract and store tool output data in the structured extracted_data section."""
@@ -116,7 +137,7 @@ class MarkdownLogger:
         if isinstance(message, ToolMessage):
             try:
                 msg_content = json.loads(message.content)
-            except Exception:
+            except (json.JSONDecodeError, TypeError):
                 pass  # Keep as string if parsing fails
 
         # Construct the log entry for raw_messages
@@ -145,46 +166,62 @@ class MarkdownLogger:
             if tool_name:
                 self._extract_tool_data(tool_name, msg_content)
 
-        # Save JSON to disk
-        self._save_json()
+        # Save JSON to disk (batch save based on save_interval)
+        self._message_count += 1
+        if self._message_count >= self.save_interval:
+            self._save_json()
+            self._message_count = 0
 
         # --- PART B: Markdown Logging (Human Readable) ---
 
-        with open(self.md_filename, "a", encoding="utf-8") as f:
-            # 1. Human Message
-            if isinstance(message, HumanMessage):
-                f.write("## 👤 User Request\n")
-                f.write(f"> {message.content}\n\n")
+        try:
+            with open(self.md_filename, "a", encoding="utf-8") as f:
+                # 1. Human Message
+                if isinstance(message, HumanMessage):
+                    f.write("## 👤 User Request\n")
+                    f.write(f"> {message.content}\n\n")
 
-            # 2. AI Message
-            elif isinstance(message, AIMessage):
-                # Case: AI is executing tools
-                if message.tool_calls:
-                    f.write("## 🤖 Agent Reasoning & Actions\n")
-                    if message.content:
+                # 2. AI Message
+                elif isinstance(message, AIMessage):
+                    # Case: AI is executing tools
+                    if message.tool_calls:
+                        f.write("## 🤖 Agent Reasoning & Actions\n")
+                        if message.content:
+                            f.write(f"{message.content}\n\n")
+
+                        for tool in message.tool_calls:
+                            f.write(f"### 🛠️ Executing Tool: `{tool['name']}`\n")
+                            f.write(f"```json\n{json.dumps(tool['args'], indent=2)}\n```\n")
+
+                    # Case: AI is providing the final answer
+                    else:
+                        f.write("## 📝 Final Output\n")
                         f.write(f"{message.content}\n\n")
 
-                    for tool in message.tool_calls:
-                        f.write(f"### 🛠️ Executing Tool: `{tool['name']}`\n")
-                        f.write(f"```json\n{json.dumps(tool['args'], indent=2)}\n```\n")
+                # 3. Tool Message - Only reference, no raw data
+                elif isinstance(message, ToolMessage):
+                    tool_name = self._get_tool_name_from_id(message.tool_call_id)
+                    f.write(f"### 📬 Tool Output: `{tool_name or message.tool_call_id}`\n")
+                    f.write(
+                        f"> ✅ Data received. Full data: [{self.json_filename.name}]"
+                        f"(./{self.json_filename.name})\n\n"
+                    )
 
-                # Case: AI is providing the final answer
+                # 4. System Message
+                elif isinstance(message, SystemMessage):
+                    content = message.content
+                    if len(content) > 100:
+                        content = content[:100] + "..."
+                    f.write(f"**System Context:** *{content}*\n\n")
+
+                # 5. Unknown message type
                 else:
-                    f.write("## 📝 Final Output\n")
+                    logging.warning(f"Unknown message type: {type(message).__name__}")
+                    f.write(f"## ❓ Unknown Message ({type(message).__name__})\n")
                     f.write(f"{message.content}\n\n")
 
-            # 3. Tool Message - Only reference, no raw data
-            elif isinstance(message, ToolMessage):
-                tool_name = self._get_tool_name_from_id(message.tool_call_id)
-                f.write(f"### 📬 Tool Output: `{tool_name or message.tool_call_id}`\n")
-                f.write(
-                    f"> ✅ Data received. Full data: [{os.path.basename(self.json_filename)}]"
-                    f"(./{os.path.basename(self.json_filename)})\n\n"
-                )
-
-            # 4. System Message
-            elif isinstance(message, SystemMessage):
-                f.write(f"**System Context:** *{message.content[:100]}...*\n\n")
+        except IOError as e:
+            logging.error(f"Failed to write to Markdown log file {self.md_filename}: {e}")
 
     def _get_tool_name_from_id(self, tool_call_id: str) -> str:
         """Find the tool name from a tool_call_id by searching previous messages."""

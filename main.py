@@ -33,9 +33,6 @@ async def main():
             if hasattr(last_message, "tool_calls") and last_message.tool_calls:
                 print(f"   -> Calling {len(last_message.tool_calls)} tool(s)...")
 
-    # --- SỬA DÒNG NÀY ---
-    # Cũ (Lỗi): logger.filename
-    # Mới (Đúng): logger.md_filename
     print(f"\n🎉 Research Complete! Check the 'logs/' folder for the report: {logger.md_filename}")
 
 
