@@ -18,20 +18,28 @@ async def main():
 
     logger.log(initial_state["messages"][0])
 
+    # Track how many messages we've already logged to avoid duplicates
+    logged_count = 1  # We already logged the initial HumanMessage
+
     # 3. Run Graph
     async for event in app.astream(initial_state, stream_mode="values"):
         messages = event.get("messages")
         if messages:
-            last_message = messages[-1]
-
-            if isinstance(last_message, HumanMessage):
-                continue
-
-            logger.log(last_message)
-
-            print(f"✅ Processed step: {type(last_message).__name__}")
-            if hasattr(last_message, "tool_calls") and last_message.tool_calls:
-                print(f"   -> Calling {len(last_message.tool_calls)} tool(s)...")
+            # Log ALL new messages, not just the last one
+            new_messages = messages[logged_count:]
+            
+            for msg in new_messages:
+                if isinstance(msg, HumanMessage):
+                    continue
+                    
+                logger.log(msg)
+                
+                print(f"✅ Processed step: {type(msg).__name__}")
+                if hasattr(msg, "tool_calls") and msg.tool_calls:
+                    print(f"   -> Calling {len(msg.tool_calls)} tool(s)...")
+            
+            # Update counter to current message count
+            logged_count = len(messages)
 
     print(f"\n🎉 Research Complete! Check the 'logs/' folder for the report: {logger.md_filename}")
 

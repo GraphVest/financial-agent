@@ -7,17 +7,16 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode
 
 from src.state import AgentState
-from src.tools import get_company_profile, get_financial_ratios, get_financial_statements, get_stock_news
+from src.tools import get_company_profile, get_financial_ratios, get_financial_statements
 
 # Load env to get OPENAI_API_KEY
 load_dotenv()
 
 # --- 1. SETUP LLM & TOOLS ---
-# Use GPT-4o-mini or GPT-3.5-turbo for speed and cost efficiency
 llm = ChatOpenAI(model="gpt-5-mini", temperature=0)
 
 # List of tools we created in Phase 3
-tools = [get_company_profile, get_financial_ratios, get_stock_news, get_financial_statements]
+tools = [get_company_profile, get_financial_ratios, get_financial_statements]
 
 # Bind tools to the LLM. This gives the LLM the ability to "know" these tools exist.
 llm_with_tools = llm.bind_tools(tools)
@@ -45,10 +44,13 @@ def researcher_node(state: AgentState):
         You MUST call the following tools to get the data:
         1. get_company_profile
         2. get_financial_ratios
-        3. get_stock_news
-        4. get_financial_statements
+        3. get_financial_statements
         
-        Do not write the report yet. Just fetch the data.
+        CRITICAL RULES:
+        - Do NOT write any analysis or report yet. Just fetch the data.
+        - Do NOT add any information from your internal knowledge.
+        - Only use the data returned by the tools.
+        - If a tool returns an error, report it as-is.
         """
         )
         # Prepend system message to history
@@ -71,16 +73,21 @@ def writer_node(state: AgentState):
 
     # Create a prompt for the final report
     prompt = f"""
-    You are a Senior Financial Analyst. 
-    Based on the tool outputs above, write a comprehensive investment report for {ticker}.
+    You are a Senior Financial Analyst writing an investment report for {ticker}.
+    
+    CRITICAL RULES - YOU MUST FOLLOW STRICTLY:
+    1. Use ONLY the data provided in the tool outputs above.
+    2. Do NOT add any information from your internal knowledge or training data.
+    3. Do NOT hallucinate or make up any data, statistics, or facts.
+    4. If data is missing or unavailable, explicitly state "Data not available" instead of guessing.
+    5. All numbers, metrics, and facts must come directly from the tool outputs.
     
     The report must be in Markdown format and include:
-    1. **Company Overview**: What do they do?
-    2. **Financial Health**: Analyze P/E, EPS, ROE, etc.
-    3. **Market Sentiment**: Summarize the latest news.
-    4. **Recommendation**: Buy, Hold, or Sell (based on your analysis).
+    1. **Company Overview**: Based ONLY on data from get_company_profile.
+    2. **Financial Health**: Based ONLY on data from get_financial_ratios and get_financial_statements.
+    3. **Recommendation**: Buy, Hold, or Sell - based ONLY on the data provided above.
     
-    Be professional, concise, and data-driven.
+    Be professional, concise, and strictly data-driven. Cite specific numbers from the tools.
     """
 
     # We use the raw LLM (without tools) for writing, as we just want text generation now.

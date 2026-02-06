@@ -128,20 +128,42 @@ class MarkdownLogger:
         Processes a LangChain message:
         1. Appends the raw message data to the JSON context file.
         2. Formats and writes the message to the Markdown log file.
+
+        For ToolMessages, we store only a lightweight reference in raw_messages
+        to avoid data duplication. The actual tool output data is stored in
+        extracted_data for structured access.
         """
 
         # --- PART A: JSON Archiving (Machine Readable) ---
 
-        # Extract content (handle cases where content is a JSON string)
-        msg_content = message.content
+        # Parse ToolMessage content if it's a JSON string
+        parsed_content = message.content
         if isinstance(message, ToolMessage):
             try:
-                msg_content = json.loads(message.content)
+                parsed_content = json.loads(message.content)
             except (json.JSONDecodeError, TypeError):
                 pass  # Keep as string if parsing fails
 
         # Construct the log entry for raw_messages
-        entry = {"type": type(message).__name__, "timestamp": datetime.now().isoformat(), "content": msg_content}
+        entry = {
+            "type": type(message).__name__,
+            "timestamp": datetime.now().isoformat(),
+        }
+
+        # For ToolMessages: store only a reference, not the full content (avoid duplication)
+        # The actual data is stored in extracted_data for structured access
+        if isinstance(message, ToolMessage):
+            tool_name = self._get_tool_name_from_id(message.tool_call_id)
+            entry["tool_call_id"] = message.tool_call_id
+            entry["tool_name"] = tool_name or "unknown"
+            entry["content_ref"] = self._get_extracted_data_path(tool_name)
+
+            # Extract and store data in structured extracted_data section
+            if tool_name:
+                self._extract_tool_data(tool_name, parsed_content)
+        else:
+            # For non-ToolMessages, store the full content
+            entry["content"] = parsed_content
 
         # Capture tool calls if present (for AI reasoning steps)
         if hasattr(message, "tool_calls") and message.tool_calls:
@@ -152,19 +174,8 @@ class MarkdownLogger:
                 if tool_name and tool_name not in self.json_data["metadata"]["tools_called"]:
                     self.json_data["metadata"]["tools_called"].append(tool_name)
 
-        # Capture tool call ID if present (for Tool outputs)
-        if hasattr(message, "tool_call_id"):
-            entry["tool_call_id"] = message.tool_call_id
-
         # Update raw_messages
         self.json_data["raw_messages"].append(entry)
-
-        # Extract data from ToolMessage for structured storage
-        if isinstance(message, ToolMessage):
-            # Find which tool this output belongs to
-            tool_name = self._get_tool_name_from_id(message.tool_call_id)
-            if tool_name:
-                self._extract_tool_data(tool_name, msg_content)
 
         # Save JSON to disk (batch save based on save_interval)
         self._message_count += 1
@@ -223,6 +234,19 @@ class MarkdownLogger:
         except IOError as e:
             logging.error(f"Failed to write to Markdown log file {self.md_filename}: {e}")
 
+    def _get_extracted_data_path(self, tool_name: str) -> str:
+        """
+        Returns a reference path to where the tool data is stored in extracted_data.
+        This is used in raw_messages to point to the actual data without duplication.
+        """
+        path_map = {
+            "get_company_profile": "extracted_data.profile",
+            "get_financial_ratios": "extracted_data.metrics",
+            "get_stock_news": "extracted_data.news",
+            "get_financial_statements": "extracted_data.{income_statement, balance_sheet, cash_flow}",
+        }
+        return path_map.get(tool_name, f"extracted_data.{tool_name}")
+
     def _get_tool_name_from_id(self, tool_call_id: str) -> str:
         """Find the tool name from a tool_call_id by searching previous messages."""
         for msg in self.json_data["raw_messages"]:
@@ -231,3 +255,4 @@ class MarkdownLogger:
                     if tool.get("id") == tool_call_id:
                         return tool.get("name", "")
         return ""
+
