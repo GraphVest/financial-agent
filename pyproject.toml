@@ -9,13 +9,14 @@ dependencies = [
     "langchain-core>=1.2.8",
     "langchain-openai>=1.1.7",
     "langgraph>=1.0.7",
+    "langsmith>=0.6.8",
     "pydantic>=2.12.5",
     "python-dotenv>=1.2.1",
     "ruff>=0.15.0",
 ]
 
 [tool.ruff]
-line-length = 120
+line-length = 150
 target-version = "py311"
 
 [tool.ruff.lint]

@@ -47,10 +47,11 @@ def researcher_node(state: AgentState):
         3. get_financial_statements
         
         CRITICAL RULES:
-        - Do NOT write any analysis or report yet. Just fetch the data.
+        - ONLY call the tools listed above. Do NOT write any analysis, summary, or report.
+        - After tools return data, respond with ONLY: "Data collection complete."
+        - Do NOT summarize, interpret, or analyze the tool outputs.
         - Do NOT add any information from your internal knowledge.
-        - Only use the data returned by the tools.
-        - If a tool returns an error, report it as-is.
+        - The analysis and report writing will be handled by a separate writer.
         """
         )
         # Prepend system message to history
@@ -82,10 +83,14 @@ def writer_node(state: AgentState):
     4. If data is missing or unavailable, explicitly state "Data not available" instead of guessing.
     5. All numbers, metrics, and facts must come directly from the tool outputs.
     
-    The report must be in Markdown format and include:
+    FORMAT RULES:
+    - Start the report DIRECTLY with the title "# {ticker} Investment Report" (no preamble, no "Prepared by", no "Sources" metadata).
+    - End the report IMMEDIATELY after the Recommendation section (no offers like "If you want, I can...", no follow-up questions).
+    
+    The report must include ONLY these 3 sections in Markdown:
     1. **Company Overview**: Based ONLY on data from get_company_profile.
     2. **Financial Health**: Based ONLY on data from get_financial_ratios and get_financial_statements.
-    3. **Recommendation**: Buy, Hold, or Sell - based ONLY on the data provided above.
+    3. **Recommendation**: Buy, Hold, or Sell - with brief rationale based ONLY on the data.
     
     Be professional, concise, and strictly data-driven. Cite specific numbers from the tools.
     """
@@ -139,8 +144,8 @@ workflow.add_conditional_edges(
     },
 )
 
-# Tools -> Back to Researcher (to see if more data is needed)
-workflow.add_edge("tools", "researcher")
+# Tools -> Go directly to Writer (skip researcher's intermediate summary)
+workflow.add_edge("tools", "writer")
 
 # Writer -> End
 workflow.add_edge("writer", END)
