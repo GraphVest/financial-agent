@@ -69,3 +69,44 @@ class FinancialStatement(BaseModel):
 
     # Allow all other fields (revenue, netIncome, totalAssets, etc.) to pass through
     model_config = {"extra": "allow"}
+
+
+# 5. Analyst Estimates Model
+class AnalystEstimate(BaseModel):
+    """Analyst consensus estimates for revenue and EPS."""
+
+    symbol: str
+    date: str
+    estimated_revenue_avg: float | None = Field(alias="revenueAvg", default=None)
+    estimated_revenue_high: float | None = Field(alias="revenueHigh", default=None)
+    estimated_revenue_low: float | None = Field(alias="revenueLow", default=None)
+    estimated_eps_avg: float | None = Field(alias="epsAvg", default=None)
+    estimated_eps_high: float | None = Field(alias="epsHigh", default=None)
+    estimated_eps_low: float | None = Field(alias="epsLow", default=None)
+    number_analyst_estimated_revenue: int | None = Field(
+        alias="numAnalystsRevenue", default=None
+    )
+    number_analysts_estimated_eps: int | None = Field(
+        alias="numAnalystsEps", default=None
+    )
+
+    model_config = {"extra": "ignore", "populate_by_name": True}
+
+
+# 6. Institutional Holder Model (Form 13F)
+class InstitutionalHolder(BaseModel):
+    """An institutional holder from Form 13F filings."""
+
+    investor_name: str = Field(alias="investorName")
+    symbol: str
+    security_name: str | None = Field(alias="securityName", default=None)
+    shares_number: int | None = Field(alias="sharesNumber", default=None)
+    market_value: float | None = Field(alias="marketValue", default=None)
+    avg_price_paid: float | None = Field(alias="avgPricePaid", default=None)
+    ownership_percent: float | None = Field(alias="ownershipPercent", default=None)
+    change_in_shares_number_percentage: float | None = Field(
+        alias="changeInSharesNumberPercentage", default=None
+    )
+    is_new: bool | None = Field(alias="isNew", default=None)
+
+    model_config = {"extra": "ignore", "populate_by_name": True}

@@ -14,23 +14,46 @@ class TestCompletenessEvaluator:
 
     def test_all_sections_present(self):
         """Should score 1.0 when all sections present."""
-        # Mock run with all sections
+        # Mock run with all sections matching writer prompt
         class MockRun:
             outputs = {
                 "output": """
-                # AAPL Investment Report
-                ## Company Overview
-                Apple Inc is a tech company.
-                ## Financial Health
-                Revenue is growing.
-                ## Recommendation
-                Buy - strong fundamentals.
+                # AAPL Deep Dive: The Services Pivot
+
+                **🚨 Executive Summary (TL;DR)**
+                Apple is transforming.
+
+                **1. Business Transformation: From Hardware to Services**
+                Revenue mix is shifting.
+
+                **2. The Moat & Competitive Advantage: Ecosystem Lock-in**
+                iPhone ecosystem is unmatched.
+
+                **3. Financial Performance: Margins Expanding**
+                Operating leverage is real.
+
+                **4. Outlook & Future Roadmap: Vision Pro Era**
+                Management guided higher.
+
+                **5. The Bear Case & Risks: China Dependency**
+                Geopolitical risks remain.
+
+                **6. Valuation & The Verdict: Priced for Perfection**
+                Forward P/E suggests premium.
                 """
             }
 
         class MockExample:
             outputs = {
-                "expected_sections": ["Company Overview", "Financial Health", "Recommendation"]
+                "expected_sections": [
+                    "Executive Summary",
+                    "Business Transformation",
+                    "The Moat",
+                    "Financial Performance",
+                    "Outlook",
+                    "Bear Case",
+                    "Valuation",
+                ]
             }
 
         result = completeness_evaluator(MockRun(), MockExample())
@@ -43,21 +66,29 @@ class TestCompletenessEvaluator:
             outputs = {
                 "output": """
                 # Report
-                ## Company Overview
+                **🚨 Executive Summary (TL;DR)**
                 Some info.
-                ## Recommendation
+                **6. Valuation & The Verdict**
                 Buy.
                 """
             }
 
         class MockExample:
             outputs = {
-                "expected_sections": ["Company Overview", "Financial Health", "Recommendation"]
+                "expected_sections": [
+                    "Executive Summary",
+                    "Business Transformation",
+                    "The Moat",
+                    "Financial Performance",
+                    "Outlook",
+                    "Bear Case",
+                    "Valuation",
+                ]
             }
 
         result = completeness_evaluator(MockRun(), MockExample())
         assert result.score < 1.0
-        assert "Financial Health" in result.comment
+        assert "Business Transformation" in result.comment
 
 
 class TestHelpers:
@@ -87,6 +118,20 @@ class TestIntegration:
     def test_single_eval_aapl(self):
         """Run single eval on AAPL."""
         results = run_single_eval("AAPL")
+        assert "faithfulness" in results
+        assert "completeness" in results
+        assert "tool_coverage" in results
+
+
+@pytest.mark.skip(reason="Requires Langfuse API - run manually")
+class TestLangfuseIntegration:
+    """Langfuse integration tests requiring API calls."""
+
+    def test_langfuse_single_eval(self):
+        """Run Langfuse eval on single ticker."""
+        from eval.langfuse_runner import run_langfuse_eval
+
+        results = run_langfuse_eval("AAPL")
         assert "faithfulness" in results
         assert "completeness" in results
         assert "tool_coverage" in results

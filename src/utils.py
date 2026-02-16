@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage, ToolMessage
+from langchain_core.messages import AIMessage, BaseMessage, ToolMessage
 
 
 class MarkdownLogger:
@@ -12,7 +12,7 @@ class MarkdownLogger:
     A Dual-Logger that streams agent interactions to a readable Markdown file
     while simultaneously archiving the full raw context into a structured JSON file.
 
-    - Markdown (.md): For human readability - contains final report + trace (no raw data)
+    - Markdown (.md): For human readability - contains the final AI analysis report only
     - JSON (.json): For machine processing - contains metadata, messages, and extracted data
     """
 
@@ -55,10 +55,10 @@ class MarkdownLogger:
         # Initialize the Markdown file with a header
         try:
             with open(self.md_filename, "w", encoding="utf-8") as f:
-                f.write(f"# 🕵️‍♂️ Financial Research Log: ${ticker}\n")
+                f.write(f"# 🕵️‍♂️ Financial Research Report: ${ticker}\n")
                 f.write(f"*Date: {now.strftime('%Y-%m-%d %H:%M:%S')}*\n")
                 f.write(
-                    f"*Raw Data Context:* [`{self.json_filename.name}`]"
+                    f"*Raw Data & Full Logs:* [`{self.json_filename.name}`]"
                     f"(./{self.json_filename.name})\n\n"
                 )
                 f.write("---\n\n")
@@ -81,6 +81,13 @@ class MarkdownLogger:
                 "income_statement": [],
                 "balance_sheet": [],
                 "cash_flow": [],
+                "earnings_transcript": None,
+                "earnings_summary": None,
+                "revenue_product_segments": [],
+                "revenue_geographic_segments": [],
+                "analyst_estimates": [],
+                "institutional_holders": [],
+                "ownership_summary": None,
             },
         }
 
@@ -94,13 +101,15 @@ class MarkdownLogger:
 
     def _extract_tool_data(self, tool_name: str, content: Any):
         """Extract and store tool output data in the structured extracted_data section."""
-        if not isinstance(content, (dict, list)):
-            # Try to parse if it's a JSON string
-            if isinstance(content, str):
-                try:
-                    content = json.loads(content)
-                except (ValueError, TypeError):
-                    return
+        if not isinstance(content, (dict, list, str)):
+            return
+
+        # Try to parse JSON strings into dicts/lists (for FMP tools)
+        if isinstance(content, str):
+            try:
+                content = json.loads(content)
+            except (ValueError, TypeError):
+                pass  # Keep as string — Tavily search tools return plain text
 
         # Map tool outputs to extracted_data fields
         if tool_name == "get_company_profile":
@@ -117,6 +126,20 @@ class MarkdownLogger:
                     self.json_data["extracted_data"]["balance_sheet"] = content["balance_sheet"]
                 if "cash_flow" in content:
                     self.json_data["extracted_data"]["cash_flow"] = content["cash_flow"]
+        elif tool_name == "get_earnings_transcript":
+            self.json_data["extracted_data"]["earnings_transcript"] = content
+        elif tool_name == "get_earnings_summary_via_search":
+            self.json_data["extracted_data"]["earnings_summary"] = content
+        elif tool_name == "get_revenue_segmentation":
+            if isinstance(content, dict):
+                self.json_data["extracted_data"]["revenue_product_segments"] = content.get("product_segments", [])
+                self.json_data["extracted_data"]["revenue_geographic_segments"] = content.get("geographic_segments", [])
+        elif tool_name == "get_analyst_estimates":
+            self.json_data["extracted_data"]["analyst_estimates"] = content if isinstance(content, list) else [content]
+        elif tool_name == "get_institutional_holders":
+            self.json_data["extracted_data"]["institutional_holders"] = content if isinstance(content, list) else [content]
+        elif tool_name == "get_ownership_via_search":
+            self.json_data["extracted_data"]["ownership_summary"] = content
 
     def _save_json(self):
         """Save the structured JSON data to disk."""
@@ -127,7 +150,7 @@ class MarkdownLogger:
         """
         Processes a LangChain message:
         1. Appends the raw message data to the JSON context file.
-        2. Formats and writes the message to the Markdown log file.
+        2. Writes only the final AI analysis to the Markdown report file.
 
         For ToolMessages, we store only a lightweight reference in raw_messages
         to avoid data duplication. The actual tool output data is stored in
@@ -183,54 +206,13 @@ class MarkdownLogger:
             self._save_json()
             self._message_count = 0
 
-        # --- PART B: Markdown Logging (Human Readable) ---
+        # --- PART B: Markdown Report (Final Output Only) ---
 
         try:
             with open(self.md_filename, "a", encoding="utf-8") as f:
-                # 1. Human Message
-                if isinstance(message, HumanMessage):
-                    f.write("## 👤 User Request\n")
-                    f.write(f"> {message.content}\n\n")
-
-                # 2. AI Message
-                elif isinstance(message, AIMessage):
-                    # Case: AI is executing tools
-                    if message.tool_calls:
-                        f.write("## 🤖 Agent Reasoning & Actions\n")
-                        if message.content:
-                            f.write(f"{message.content}\n\n")
-
-                        for tool in message.tool_calls:
-                            f.write(f"### 🛠️ Executing Tool: `{tool['name']}`\n")
-                            f.write(f"```json\n{json.dumps(tool['args'], indent=2)}\n```\n")
-
-                    # Case: AI is providing the final answer
-                    else:
-                        f.write("## 📝 Final Output\n")
-                        f.write(f"{message.content}\n\n")
-
-                # 3. Tool Message - Only reference, no raw data
-                elif isinstance(message, ToolMessage):
-                    tool_name = self._get_tool_name_from_id(message.tool_call_id)
-                    f.write(f"### 📬 Tool Output: `{tool_name or message.tool_call_id}`\n")
-                    f.write(
-                        f"> ✅ Data received. Full data: [{self.json_filename.name}]"
-                        f"(./{self.json_filename.name})\n\n"
-                    )
-
-                # 4. System Message
-                elif isinstance(message, SystemMessage):
-                    content = message.content
-                    if len(content) > 100:
-                        content = content[:100] + "..."
-                    f.write(f"**System Context:** *{content}*\n\n")
-
-                # 5. Unknown message type
-                else:
-                    logging.warning(f"Unknown message type: {type(message).__name__}")
-                    f.write(f"## ❓ Unknown Message ({type(message).__name__})\n")
+                # Only write the final AI answer (AIMessage without tool_calls)
+                if isinstance(message, AIMessage) and not message.tool_calls:
                     f.write(f"{message.content}\n\n")
-
         except IOError as e:
             logging.error(f"Failed to write to Markdown log file {self.md_filename}: {e}")
 
@@ -244,6 +226,12 @@ class MarkdownLogger:
             "get_financial_ratios": "extracted_data.metrics",
             "get_stock_news": "extracted_data.news",
             "get_financial_statements": "extracted_data.{income_statement, balance_sheet, cash_flow}",
+            "get_earnings_transcript": "extracted_data.earnings_transcript",
+            "get_earnings_summary_via_search": "extracted_data.earnings_summary",
+            "get_revenue_segmentation": "extracted_data.{revenue_product_segments, revenue_geographic_segments}",
+            "get_analyst_estimates": "extracted_data.analyst_estimates",
+            "get_institutional_holders": "extracted_data.institutional_holders",
+            "get_ownership_via_search": "extracted_data.ownership_summary",
         }
         return path_map.get(tool_name, f"extracted_data.{tool_name}")
 

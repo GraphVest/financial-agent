@@ -1,22 +1,26 @@
 {
   "metadata": {
     "ticker": "NVDA",
-    "timestamp": "2026-02-06T22:02:07.527674",
+    "timestamp": "2026-02-14T12:59:12.221580",
     "tools_called": [
       "get_company_profile",
       "get_financial_ratios",
-      "get_financial_statements"
+      "get_financial_statements",
+      "get_earnings_summary_via_search",
+      "get_revenue_segmentation",
+      "get_analyst_estimates",
+      "get_ownership_via_search"
     ]
   },
   "raw_messages": [
     {
       "type": "HumanMessage",
-      "timestamp": "2026-02-06T22:02:07.527969",
+      "timestamp": "2026-02-14T12:59:12.221867",
       "content": "Research NVDA stock."
     },
     {
       "type": "AIMessage",
-      "timestamp": "2026-02-06T22:02:11.822420",
+      "timestamp": "2026-02-14T12:59:14.615483",
       "content": "",
       "tool_calls": [
         {
@@ -24,7 +28,7 @@
           "args": {
             "ticker": "NVDA"
           },
-          "id": "call_BS2V2ZidtMS2f84SOds8ETKL",
+          "id": "call_1lDzz7OIqEpc7yeFEIcyX8LS",
           "type": "tool_call"
         },
         {
@@ -32,7 +36,7 @@
           "args": {
             "ticker": "NVDA"
           },
-          "id": "call_jF6UWPFGOSEevry8zxiKWLo4",
+          "id": "call_fTB5HDMqrKWJCQSWxkw5xC4i",
           "type": "tool_call"
         },
         {
@@ -40,44 +44,104 @@
           "args": {
             "ticker": "NVDA"
           },
-          "id": "call_ox0QVzZ7tERoqAUJ85FNefvD",
+          "id": "call_gz12uqRrDZ0AMegsyEtDVHd0",
+          "type": "tool_call"
+        },
+        {
+          "name": "get_earnings_summary_via_search",
+          "args": {
+            "ticker": "NVDA"
+          },
+          "id": "call_MNKMrWIq7PH5hfLMuvFiHJ9N",
+          "type": "tool_call"
+        },
+        {
+          "name": "get_revenue_segmentation",
+          "args": {
+            "ticker": "NVDA"
+          },
+          "id": "call_8ZlRg0BT0zE182b3XLFze1Cf",
+          "type": "tool_call"
+        },
+        {
+          "name": "get_analyst_estimates",
+          "args": {
+            "ticker": "NVDA"
+          },
+          "id": "call_z1rPA665fPTbKn79ZbsQ69qS",
+          "type": "tool_call"
+        },
+        {
+          "name": "get_ownership_via_search",
+          "args": {
+            "ticker": "NVDA"
+          },
+          "id": "call_TbVd3vfm4VtJWp994q7pygUA",
           "type": "tool_call"
         }
       ]
     },
     {
       "type": "ToolMessage",
-      "timestamp": "2026-02-06T22:02:12.197333",
-      "tool_call_id": "call_BS2V2ZidtMS2f84SOds8ETKL",
+      "timestamp": "2026-02-14T12:59:17.021199",
+      "tool_call_id": "call_1lDzz7OIqEpc7yeFEIcyX8LS",
       "tool_name": "get_company_profile",
       "content_ref": "extracted_data.profile"
     },
     {
       "type": "ToolMessage",
-      "timestamp": "2026-02-06T22:02:12.197762",
-      "tool_call_id": "call_jF6UWPFGOSEevry8zxiKWLo4",
+      "timestamp": "2026-02-14T12:59:17.022037",
+      "tool_call_id": "call_fTB5HDMqrKWJCQSWxkw5xC4i",
       "tool_name": "get_financial_ratios",
       "content_ref": "extracted_data.metrics"
     },
     {
       "type": "ToolMessage",
-      "timestamp": "2026-02-06T22:02:12.198515",
-      "tool_call_id": "call_ox0QVzZ7tERoqAUJ85FNefvD",
+      "timestamp": "2026-02-14T12:59:17.022669",
+      "tool_call_id": "call_gz12uqRrDZ0AMegsyEtDVHd0",
       "tool_name": "get_financial_statements",
       "content_ref": "extracted_data.{income_statement, balance_sheet, cash_flow}"
     },
     {
+      "type": "ToolMessage",
+      "timestamp": "2026-02-14T12:59:17.023602",
+      "tool_call_id": "call_MNKMrWIq7PH5hfLMuvFiHJ9N",
+      "tool_name": "get_earnings_summary_via_search",
+      "content_ref": "extracted_data.earnings_summary"
+    },
+    {
+      "type": "ToolMessage",
+      "timestamp": "2026-02-14T12:59:17.024541",
+      "tool_call_id": "call_8ZlRg0BT0zE182b3XLFze1Cf",
+      "tool_name": "get_revenue_segmentation",
+      "content_ref": "extracted_data.{revenue_product_segments, revenue_geographic_segments}"
+    },
+    {
+      "type": "ToolMessage",
+      "timestamp": "2026-02-14T12:59:17.025975",
+      "tool_call_id": "call_z1rPA665fPTbKn79ZbsQ69qS",
+      "tool_name": "get_analyst_estimates",
+      "content_ref": "extracted_data.analyst_estimates"
+    },
+    {
+      "type": "ToolMessage",
+      "timestamp": "2026-02-14T12:59:17.027567",
+      "tool_call_id": "call_TbVd3vfm4VtJWp994q7pygUA",
+      "tool_name": "get_ownership_via_search",
+      "content_ref": "extracted_data.ownership_summary"
+    },
+    {
       "type": "AIMessage",
-      "timestamp": "2026-02-06T22:02:41.570086",
-      "content": "# NVDA Investment Report\n\n## Company Overview\nNVIDIA Corporation (NVDA) — Price: $185.41; Market Cap: $4,514,177,522,343.0  \nSector: Technology; Industry: Semiconductors; CEO: Jen-Hsun Huang; Website: https://www.nvidia.com\n\nDescription (excerpt): \"NVIDIA Corporation provides graphics, and compute and networking solutions in the United States, Taiwan, China, and internationally. The company's Graphics segment offers GeForce GPUs for gaming and PCs... Its Compute & Networking segment provides Data Center platforms and systems for AI, HPC, and accelerated computing... The company's products are used in gaming, professional visualization, datacenter, and automotive markets.\" (Data from get_company_profile)\n\n## Financial Health\nKey ratios (from get_financial_ratios)\n- Price-to-Earnings (TTM): 45.46935492651061\n- Net Income per Share (TTM): 4.077691453940067\n- Return on Equity (TTM): 1.0381843965693174\n- Debt-to-Equity (TTM): 0.09101995845143275\n- Dividend Yield (TTM): 0.000215738094\n\nIncome statement trends (selected, from get_financial_statements)\n- Revenue: FY2022 $26,914,000,000 → FY2023 $26,974,000,000 → FY2024 $60,922,000,000 → FY2025 $130,497,000,000.\n- Net Income: FY2022 $9,752,000,000 → FY2023 $4,368,000,000 → FY2024 $29,760,000,000 → FY2025 $72,880,000,000.\n- EPS (reported): FY2025 eps $2.97; FY2024 eps $1.21; FY2023 eps $0.18; FY2022 eps $0.39.\n\nBalance sheet highlights (FY2025, from get_financial_statements)\n- Total Assets: $111,601,000,000\n- Total Liabilities: $32,274,000,000\n- Total Equity: $79,327,000,000\n- Total Debt (FY2025): $10,270,000,000; Net Debt: $1,681,000,000\n- Cash & Short-Term Investments (FY2025): $43,210,000,000\n- Inventory (FY2025): $10,080,000,000\n- Retained Earnings (FY2025): $68,038,000,000\n\nCash flow highlights (from get_financial_statements)\n- Operating Cash Flow (FY2025): $64,089,000,000\n- Free Cash Flow (FY2025): $60,853,000,000\n- Net Cash Provided by Investing Activities (FY2025): -$20,421,000,000\n- Net Cash Used in Financing Activities (FY2025): -$42,359,000,000\n\nInterpretation based strictly on provided data\n- Profitability and returns: Reported Return on Equity (TTM) is 1.0381843965693174 (indicating a very high ROE on the reported basis). Net income increased materially to $72,880,000,000 in FY2025 from $29,760,000,000 in FY2024.\n- Cash generation: Strong cash generation in FY2025 with Operating Cash Flow $64,089,000,000 and Free Cash Flow $60,853,000,000.\n- Leverage and liquidity: Low reported leverage with Debt-to-Equity 0.09101995845143275, Total Debt $10,270,000,000 and Net Debt $1,681,000,000, and substantial cash & short-term investments $43,210,000,000.\n- Valuation and shareholder return: Price-to-Earnings (TTM) 45.46935492651061 indicates a premium earnings multiple on a trailing basis; Dividend Yield (TTM) is 0.000215738094 (very low).\n\n## Recommendation\nBuy — Rationale: Based solely on the provided data, NVDA shows a substantial expansion in revenue (FY2025 $130,497,000,000) and net income (FY2025 $72,880,000,000), exceptional cash generation (Operating Cash Flow $64,089,000,000; Free Cash Flow $60,853,000,000), strong equity base (Total Equity $79,327,000,000) and low leverage (Debt-to-Equity 0.09101995845143275; Net Debt $1,681,000,000). These factors, taken together, support a Buy recommendation despite a trailing P/E of 45.46935492651061 and a negligible dividend yield (0.000215738094)."
+      "timestamp": "2026-02-14T12:59:56.502787",
+      "content": "NVDA Deep Dive: Blackwell-Driven AI Monopoly — Stellar Cash Flow, Priced for Perfection?\n\n🚨 Executive Summary (TL;DR)\n* The Hook: The market prizes NVIDIA as the AI compute monopolist — but it may be underweight how thoroughly NVIDIA has replatformed its business around data‑center silicon and software (Blackwell + CUDA), turning what was a GPU gaming company into the dominant AI infrastructure vendor.\n* The Numbers: FY2025 revenue $130.50B; gross profit ~$97.86B (≈75% gross margin); net income $72.88B (≈56% net margin); operating cash flow $64.09B; free cash flow $60.85B. Q2 FY2026 revenue reported at $46.7B with a non‑GAAP gross margin ~72.7%.\n* The Verdict: Bullish (but priced for perfection). NVIDIA’s competitive position and cash conversion are exceptional; downside chiefly comes from concentration, geopolitics and very high expectations embedded in the price.\n\n1. Business Transformation: Data‑Center Engines Now Drive 88% of Revenue\nNVIDIA has moved from a multi‑vertical GPU vendor to a vertically integrated AI compute platform. The FY2025 segment mix shows an almost complete reorientation: Data Center is the company, with Gaming reduced to a smaller but profitable franchise. This is not incremental change — it’s a business replatforming where software, system‑level products and full stack solutions now monetize compute more like a platform company than a commodity silicon vendor.\n\n- FY2025 Revenue: $130.497B\n- Data Center (FY2025): $115.186B (~88.3% of revenue)\n- Gaming (FY2025): $11.350B (~8.7% of revenue)\n- Automotive / Professional Visualization: Still small, growing exposures (Automotive $1.694B)\n\n2. The Moat & Competitive Advantage: Blackwell + CUDA = Ecosystem Flywheel\nThe moat is product + ecosystem. Blackwell architecture (management’s public guideposts), CUDA developer lock‑in, and system/interconnect assets (Mellanox, optimized stacks like NVIDIA AI Enterprise) create a steep barrier to entry. Competitors can design accelerators, but building an end‑to‑end stack (hardware, compilers, libraries, trained models, enterprise support) and a paying install base at hyperscaler scale is orders of magnitude harder.\n\n- Key Product Mentions: Blackwell (architecture momentum cited in guidance), CUDA ecosystem, Mellanox interconnect and NVIDIA AI Enterprise (software/service layer)\n- Why hard to replicate: Massive installed developer base, hardware+software co‑optimization, and deep relationships with cloud providers and OEMs\n\n3. Financial Performance: Margins Hitting Software Levels — They Keep About Half the Dollar\nNVIDIA is printing cash at a remarkable rate. FY2025 shows extraordinarily high gross and operating margins driven by data‑center pricing for specialized AI silicon and systems. Capital allocation has been consistent: large FCF, aggressive share repurchases and modest net debt. As a rule of thumb from FY2025, NVIDIA retains well over forty cents on every revenue dollar as free cash flow — rare for a semiconductor company.\n\n- FY2025 Revenue: $130.497B; Gross Profit: $97.858B (~75% gross margin)\n- FY2025 Operating Income: $81.453B (~62.4% operating margin)\n- FY2025 Net Income: $72.880B (~55.9% net margin)\n- FY2025 Operating Cash Flow: $64.089B; Free Cash Flow: $60.853B (≈46.6% FCF margin)\n- Balance Sheet: Total assets $111.60B; total liabilities $32.27B; net debt ~$1.68B; debt/equity very low\n\n4. Outlook & Future Roadmap: Blackwell Ramp and Systems Scale the TAM\nManagement’s commentary and recent quarters emphasize continued Blackwell momentum and system-level growth. Recent earnings showed a Q2 FY2026 data‑center acceleration and management’s midpoint guidance implying ~14% sequential growth, with sustained high gross margins. The next meaningful value drivers are continued Blackwell CPU/GPU family adoption in hyperscalers, broader enterprise adoption of NVIDIA AI Enterprise, and higher attach of systems (DGX/HGX style offerings) and networking.\n\n- Near‑term datapoints from calls: Q2 FY2026 revenue $46.7B; non‑GAAP gross margin ~72.7%; guidance midpoints implying ~14% sequential growth (Blackwell cited)\n- Analyst next‑year revenue consensus (2026): Revenue Avg $213,390,887,254; EPS Avg 4.6818 (source: aggregated analyst estimates in dataset)\n\n5. The Bear Case & Risks: Concentration, Geopolitics, and Expectations\nThe largest single risk is concentration — both product and customer concentration — plus macro/geopolitical shocks. Data‑center accounted for ~88% of FY2025 revenue, which concentrates earnings on a single technology cycle and a handful of hyperscale buyers. China exposure, export controls, or a sudden slowdown in AI procurement could compress multiples quickly. High institutional ownership amplifies trend risk: if sentiment flips, flows can be rapid and severe.\n\n- Data concentration risk: Data Center ≈88.3% of FY2025 revenue\n- Geographic exposure (FY2025): United States ~$61.3B (~47%), China ~$17.1B (~13%), Singapore/Taiwan significant (supply chain/fulfillment footprint)\n- Ownership & market structure: Institutions hold ~70–73% of shares (multiple sources), elevating herd‑driven moves\n- Valuation sensitivity: TTM P/E ~44.8 (sensitive to any EPS or growth disappointment)\n\n6. Valuation & The Verdict: Priced for Perfection; Attractive on Pullbacks\nNVIDIA’s fundamentals are among the strongest in technology — exceptional margins, cash conversion, and a dominant ecosystem. That strength is already priced into multiples and analyst forecasts. The analyst consensus embedded substantial growth: for fiscal 2026, the analyst revenue average is $213.39B (EPS avg 4.6818). The stock behaves like a high‑beta call on continued AI infrastructure spending; upside requires continued Blackwell/system adoption and no geopolitical disruptions.\n\nInvestors might consider the following allocation/entry scenarios based on risk tolerance and technical context:\n- Tactical interest zone (higher conviction, shorter term): price weakness into $160–$170 could offer a more balanced risk/reward versus today’s price (~$182.81).\n- Opportunistic accumulation (longer horizon, lower cost basis): broader market selloffs that push price into $130–$150 range materially lower valuation tail risk.\n- Position sizing: A standard 3–5% portfolio allocation fits many balanced portfolios given the single‑name concentration risk and high upside/downside volatility.\n\n- Mandatory analyst estimate cited: 2026 revenue consensus (avg) = $213,390,887,254; EPS consensus (avg) = 4.6818.\n\nEnd of report."
     }
   ],
   "extracted_data": {
     "profile": {
       "symbol": "NVDA",
       "companyName": "NVIDIA Corporation",
-      "price": 185.41,
-      "marketCap": 4514177522343.0,
+      "price": 182.81,
+      "marketCap": 4450875420447.0,
       "description": "NVIDIA Corporation provides graphics, and compute and networking solutions in the United States, Taiwan, China, and internationally. The company's Graphics segment offers GeForce GPUs for gaming and PCs, the GeForce NOW game streaming service and related infrastructure, and solutions for gaming platforms; Quadro/NVIDIA RTX GPUs for enterprise workstation graphics; vGPU software for cloud-based visual and virtual computing; automotive platforms for infotainment systems; and Omniverse software for building 3D designs and virtual worlds. Its Compute & Networking segment provides Data Center platforms and systems for AI, HPC, and accelerated computing; Mellanox networking and interconnect solutions; automotive AI Cockpit, autonomous driving development agreements, and autonomous vehicle solutions; cryptocurrency mining processors; Jetson for robotics and other embedded platforms; and NVIDIA AI Enterprise and other software. The company's products are used in gaming, professional visualization, datacenter, and automotive markets. NVIDIA Corporation sells its products to original equipment manufacturers, original device manufacturers, system builders, add-in board manufacturers, retailers/distributors, independent software vendors, Internet and cloud service providers, automotive manufacturers and tier-1 automotive suppliers, mapping companies, start-ups, and other ecosystem participants. It has a strategic collaboration with Kroger Co. NVIDIA Corporation was incorporated in 1993 and is headquartered in Santa Clara, California.",
       "sector": "Technology",
       "industry": "Semiconductors",
@@ -86,11 +150,11 @@
     },
     "metrics": {
       "symbol": "NVDA",
-      "priceToEarningsRatioTTM": 45.46935492651061,
+      "priceToEarningsRatioTTM": 44.83173924877518,
       "netIncomePerShareTTM": 4.077691453940067,
       "returnOnEquityTTM": 1.0381843965693174,
       "debtToEquityRatioTTM": 0.09101995845143275,
-      "dividendYieldTTM": 0.000215738094
+      "dividendYieldTTM": 0.000218806411
     },
     "news": [],
     "income_statement": [
@@ -722,6 +786,477 @@
         "incomeTaxesPaid": 396000000,
         "interestPaid": 246000000
       }
-    ]
+    ],
+    "earnings_transcript": null,
+    "earnings_summary": "**Source:** https://finance.yahoo.com/quote/NVDA/earnings/NVDA-Q2-2026-earnings_call-351238.html/\nEarnings call NVIDIA delivered Q2 FY2026 revenue of $46.7B, up sharply YoY, led by 56% data center growth. Gross margin reached 72.7% (non-GAAP)\n\n---\n\n**Source:** https://finance.yahoo.com/quote/NVDA.CL/earnings/NVDA.CL-Q3-2026-earnings_call-379484.html\nAt the midpoint, our outlook implies 14% sequential growth driven by continued momentum in the Blackwell architecture. Consistent with last\n\n---\n\n**Source:** https://finance.yahoo.com/news/nvidia-earnings-3-giga-takeaways-142000337.html\nAll they had to do was confirm that guidance and explain that Q1 took a larger hit of $7 billion (including inventory) and that Q2 would bear $8",
+    "revenue_product_segments": [
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2025,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2025-01-26",
+        "data": {
+          "Automotive": 1694000000,
+          "Data Center": 115186000000,
+          "Gaming": 11350000000,
+          "OEM And Other": 389000000,
+          "Professional Visualization": 1878000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2024,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2024-01-28",
+        "data": {
+          "Automotive": 1091000000,
+          "Data Center": 47525000000,
+          "Gaming": 10447000000,
+          "OEM And Other": 306000000,
+          "Professional Visualization": 1553000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2023,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2023-01-29",
+        "data": {
+          "Automotive": 903000000,
+          "Data Center": 15005000000,
+          "Gaming": 9067000000,
+          "OEM And Other": 455000000,
+          "Professional Visualization": 1544000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2022,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2022-01-30",
+        "data": {
+          "Automotive": 566000000,
+          "Data Center": 10613000000,
+          "Gaming": 12462000000,
+          "OEM And Other": 1162000000,
+          "Professional Visualization": 2111000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2021,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2021-01-31",
+        "data": {
+          "Automotive": 536000000,
+          "Data Center": 6696000000,
+          "Gaming": 7759000000,
+          "OEM And Other": 631000000,
+          "Professional Visualization": 1053000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2020,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2020-01-26",
+        "data": {
+          "Automotive": 700000000,
+          "Data Center": 2983000000,
+          "Gaming": 5518000000,
+          "OEM And Other": 505000000,
+          "Professional Visualization": 1212000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2019,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2019-01-27",
+        "data": {
+          "Automotive": 641000000,
+          "Data Center": 2932000000,
+          "Gaming": 6246000000,
+          "OEM And Other": 767000000,
+          "Professional Visualization": 1130000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2018,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2018-01-28",
+        "data": {
+          "All Other": 43000000,
+          "GPU": 8137000000,
+          "Tegra Processor": 1534000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2017,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2017-01-29",
+        "data": {
+          "All Other": 264000000,
+          "GPU": 5822000000,
+          "Tegra Processor": 824000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2016,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2016-01-31",
+        "data": {
+          "All Other": 264000000,
+          "GPU": 4187000000,
+          "Tegra Processor": 559000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2015,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2015-01-25",
+        "data": {
+          "All Other": 264000000,
+          "GPU": 3838906000,
+          "Tegra Processor": 578601000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2014,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2014-01-26",
+        "data": {
+          "All Other": 264000000,
+          "GPU": 3468144000,
+          "Tegra Processor": 398018000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2013,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2013-01-27",
+        "data": {
+          "All Other": 264000000,
+          "GPU": 3251712000,
+          "Tegra processor": 764447000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2012,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2012-01-29",
+        "data": {
+          "All Other": 0,
+          "CPB": 591166000,
+          "GPU": 2542430000,
+          "PSB": 864334000
+        }
+      }
+    ],
+    "revenue_geographic_segments": [
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2025,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2025-01-26",
+        "data": {
+          "CHINA": 17108000000,
+          "Other Americas": 7875000000,
+          "SINGAPORE": 23684000000,
+          "TAIWAN, PROVINCE OF CHINA": 20573000000,
+          "UNITED STATES": 61257000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2024,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2024-01-28",
+        "data": {
+          "CHINA": 10306000000,
+          "Other Americas": 10245000000,
+          "TAIWAN, PROVINCE OF CHINA": 13405000000,
+          "UNITED STATES": 26966000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2023,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2023-01-29",
+        "data": {
+          "CHINA": 5785000000,
+          "Other Americas": 5911000000,
+          "TAIWAN, PROVINCE OF CHINA": 6986000000,
+          "UNITED STATES": 8292000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2022,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2022-01-30",
+        "data": {
+          "CHINA": 7111000000,
+          "Other Americas": 6910000000,
+          "TAIWAN, PROVINCE OF CHINA": 8544000000,
+          "UNITED STATES": 4349000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2021,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2021-01-31",
+        "data": {
+          "CHINA": 3886000000,
+          "Europe": 1118000000,
+          "Other Asia Pacific": 3093000000,
+          "Other Americas": 833000000,
+          "TAIWAN, PROVINCE OF CHINA": 4531000000,
+          "UNITED STATES": 3214000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2020,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2020-01-26",
+        "data": {
+          "CHINA": 2731000000,
+          "Europe": 992000000,
+          "Other Asia Pacific": 2685000000,
+          "Other Americas": 599000000,
+          "TAIWAN, PROVINCE OF CHINA": 3025000000,
+          "UNITED STATES": 886000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2019,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2019-01-27",
+        "data": {
+          "CHINA": 2801000000,
+          "Europe": 914000000,
+          "Other Asia Pacific": 2368000000,
+          "Other Americas": 767000000,
+          "TAIWAN, PROVINCE OF CHINA": 3360000000,
+          "UNITED STATES": 1506000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2018,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2018-01-28",
+        "data": {
+          "CHINA": 1896000000,
+          "Europe": 768000000,
+          "Other Americas": 719000000,
+          "Other Asia Pacific": 2066000000,
+          "TAIWAN, PROVINCE OF CHINA": 2991000000,
+          "UNITED STATES": 1274000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2017,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2017-01-29",
+        "data": {
+          "CHINA": 1305000000,
+          "Europe": 659000000,
+          "Other Americas": 486000000,
+          "Other Asia Pacific": 1010000000,
+          "TAIWAN, PROVINCE OF CHINA": 2546000000,
+          "UNITED STATES": 904000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2016,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2016-01-31",
+        "data": {
+          "CHINA": 806000000,
+          "Europe": 482000000,
+          "Other Americas": 418000000,
+          "Other Asia Pacific": 749000000,
+          "TAIWAN, PROVINCE OF CHINA": 1912000000,
+          "UNITED STATES": 643000000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2015,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2015-01-25",
+        "data": {
+          "CHINA": 922121000,
+          "Europe": 368921000,
+          "Other Americas": 368387000,
+          "Other Asia Pacific": 637029000,
+          "TAIWAN, PROVINCE OF CHINA": 1594435000,
+          "UNITED STATES": 790614000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2014,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2014-01-26",
+        "data": {
+          "CHINA": 793790000,
+          "Europe": 295160000,
+          "Other Americas": 317540000,
+          "Other Asia Pacific": 675339000,
+          "TAIWAN, PROVINCE OF CHINA": 1321503000,
+          "UNITED STATES": 726830000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2013,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2013-01-27",
+        "data": {
+          "CHINA": 780493000,
+          "Europe": 263488000,
+          "Other Americas": 296337000,
+          "Other Asia Pacific": 783573000,
+          "TAIWAN, PROVINCE OF CHINA": 1356838000,
+          "UNITED STATES": 799430000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2012,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2012-01-29",
+        "data": {
+          "CHINA": 941811000,
+          "Europe": 296591000,
+          "Other Americas": 295114000,
+          "Other Asia Pacific": 730975000,
+          "TAIWAN, PROVINCE OF CHINA": 1137175000,
+          "UNITED STATES": 596264000
+        }
+      },
+      {
+        "symbol": "NVDA",
+        "fiscalYear": 2011,
+        "period": "FY",
+        "reportedCurrency": "USD",
+        "date": "2011-01-30",
+        "data": {
+          "CHINA": 1223199000,
+          "Europe": 261421000,
+          "Other Americas": 305154000,
+          "Other Asia Pacific": 519473000,
+          "TAIWAN, PROVINCE OF CHINA": 936797000,
+          "UNITED STATES": 297265000
+        }
+      }
+    ],
+    "analyst_estimates": [
+      {
+        "symbol": "NVDA",
+        "date": "2030-01-26",
+        "revenueAvg": 510441000000.0,
+        "revenueHigh": 614379764292.0,
+        "revenueLow": 429147188179.0,
+        "epsAvg": 11.965,
+        "epsHigh": 15.13229,
+        "epsLow": 9.48776,
+        "numAnalystsRevenue": 3,
+        "numAnalystsEps": 1
+      },
+      {
+        "symbol": "NVDA",
+        "date": "2029-01-26",
+        "revenueAvg": 457315728725.0,
+        "revenueHigh": 462975993902.0,
+        "revenueLow": 451655463547.0,
+        "epsAvg": 11.18216,
+        "epsHigh": 12.0954,
+        "epsLow": 10.58348,
+        "numAnalystsRevenue": 7,
+        "numAnalystsEps": 3
+      },
+      {
+        "symbol": "NVDA",
+        "date": "2028-01-26",
+        "revenueAvg": 422954980461.0,
+        "revenueHigh": 426055522436.0,
+        "revenueLow": 419854438485.0,
+        "epsAvg": 9.99643,
+        "epsHigh": 12.86773,
+        "epsLow": 7.1454,
+        "numAnalystsRevenue": 48,
+        "numAnalystsEps": 20
+      },
+      {
+        "symbol": "NVDA",
+        "date": "2027-01-26",
+        "revenueAvg": 329854897114.0,
+        "revenueHigh": 375732677317.0,
+        "revenueLow": 295383136458.0,
+        "epsAvg": 7.74516,
+        "epsHigh": 8.80324,
+        "epsLow": 6.64475,
+        "numAnalystsRevenue": 46,
+        "numAnalystsEps": 34
+      },
+      {
+        "symbol": "NVDA",
+        "date": "2026-01-26",
+        "revenueAvg": 213390887254.0,
+        "revenueHigh": 215558718673.0,
+        "revenueLow": 205110975581.0,
+        "epsAvg": 4.6818,
+        "epsHigh": 4.73203,
+        "epsLow": 4.55119,
+        "numAnalystsRevenue": 42,
+        "numAnalystsEps": 31
+      }
+    ],
+    "institutional_holders": [],
+    "ownership_summary": "**Source:** https://finance.yahoo.com/quote/NVDA/holders/\n% of Shares Held by Institutions. 72.98%, % of Float Held by Institutions. 7,171, Number of Institutions Holding Shares. Top Institutional Holders. Holder\n\n---\n\n**Source:** https://finance.yahoo.com/news/nvidia-corporations-nasdaq-nvda-high-140012837.html\nWe can see that institutions own the lion's share in the company with 68% ownership. That is, the group stands to benefit the most if the stock rises.\n\n---\n\n**Source:** https://finance.yahoo.com/news/67-ownership-nvidia-corporation-nasdaq-130129692.html\nWe can see that institutions own the lion's share in the company with 67% ownership. That is, the group stands to benefit the most if the stock rises."
   }
 }

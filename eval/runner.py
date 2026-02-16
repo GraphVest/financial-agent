@@ -10,7 +10,12 @@ from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
 from langsmith.evaluation import evaluate
 
-from eval.datasets import get_or_create_dataset
+from eval.datasets import (
+    EXPECTED_SECTIONS,
+    EXPECTED_TOOLS,
+    get_or_create_dataset,
+    recreate_dataset,
+)
 from eval.evaluators import EVALUATORS
 from src.graph import app
 
@@ -109,8 +114,8 @@ def run_single_eval(ticker: str) -> dict:
         dataset_id=uuid.uuid4(),
         inputs={"ticker": ticker},
         outputs={
-            "expected_tools": ["get_company_profile", "get_financial_ratios", "get_financial_statements"],
-            "expected_sections": ["Company Overview", "Financial Health", "Recommendation"],
+            "expected_tools": EXPECTED_TOOLS,
+            "expected_sections": EXPECTED_SECTIONS,
         },
         created_at=datetime.now(timezone.utc),
     )
@@ -130,10 +135,17 @@ def main():
     parser.add_argument("--dataset", default="financial-agent-evals", help="Dataset name")
     parser.add_argument("--ticker", help="Single ticker for quick test (skips dataset)")
     parser.add_argument("--prefix", default="financial-agent", help="Experiment prefix")
+    parser.add_argument(
+        "--recreate", action="store_true",
+        help="Delete and recreate LangSmith dataset with current expected values",
+    )
 
     args = parser.parse_args()
 
-    if args.ticker:
+    if args.recreate:
+        recreate_dataset(args.dataset)
+        print("Dataset recreated. Run again without --recreate to evaluate.")
+    elif args.ticker:
         # Quick single-ticker test
         run_single_eval(args.ticker)
     else:
@@ -143,3 +155,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

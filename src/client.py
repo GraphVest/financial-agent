@@ -4,7 +4,14 @@ from typing import Any
 import httpx
 from dotenv import load_dotenv
 
-from src.schemas import FinancialStatement, KeyMetrics, MarketNews, StockProfile
+from src.schemas import (
+    AnalystEstimate,
+    FinancialStatement,
+    InstitutionalHolder,
+    KeyMetrics,
+    MarketNews,
+    StockProfile,
+)
 
 # Load environment variables from .env file
 load_dotenv()
@@ -153,3 +160,84 @@ class FMPClient:
                     continue
 
         return statements
+
+    # --- NEW METHODS FOR PHASE 4 TOOLS ---
+
+    async def get_transcript_dates(self, ticker: str) -> list[dict]:
+        """
+        Fetches available earnings call transcript dates for a ticker.
+        Returns list sorted by most recent first.
+        """
+        endpoint = "earning-call-transcript-dates"
+        params = {"symbol": ticker}
+        data = await self._get(endpoint, params)
+        return data if isinstance(data, list) else []
+
+    async def get_transcript(self, ticker: str, year: int, quarter: int) -> list[dict]:
+        """
+        Fetches the full earnings call transcript for a specific year/quarter.
+        Requires year and quarter params (FMP stable API requirement).
+        """
+        endpoint = "earning-call-transcript"
+        params = {"symbol": ticker, "year": year, "quarter": quarter}
+        data = await self._get(endpoint, params)
+        return data if isinstance(data, list) else []
+
+    async def get_revenue_product_segmentation(self, ticker: str) -> list[dict]:
+        """
+        Fetches revenue breakdown by product segment.
+        """
+        endpoint = "revenue-product-segmentation"
+        params = {"symbol": ticker}
+        data = await self._get(endpoint, params)
+        return data if isinstance(data, list) else []
+
+    async def get_revenue_geographic_segmentation(self, ticker: str) -> list[dict]:
+        """
+        Fetches revenue breakdown by geographic region.
+        """
+        endpoint = "revenue-geographic-segmentation"
+        params = {"symbol": ticker}
+        data = await self._get(endpoint, params)
+        return data if isinstance(data, list) else []
+
+    async def get_analyst_estimates(
+        self, ticker: str, limit: int = 5
+    ) -> list[AnalystEstimate]:
+        """
+        Fetches Wall Street consensus analyst estimates (revenue, EPS).
+        """
+        endpoint = "analyst-estimates"
+        params = {"symbol": ticker, "period": "annual", "limit": limit}
+        data = await self._get(endpoint, params)
+
+        estimates = []
+        if isinstance(data, list):
+            for item in data:
+                try:
+                    estimates.append(AnalystEstimate(**item))
+                except Exception:
+                    continue
+        return estimates
+
+    async def get_institutional_holders(
+        self, ticker: str, limit: int = 10
+    ) -> list[InstitutionalHolder]:
+        """
+        Fetches top institutional holders from Form 13F filings.
+        Uses the extract-analytics/holder endpoint.
+        """
+        endpoint = "institutional-ownership/extract-analytics/holder"
+        params = {"symbol": ticker, "page": 0, "limit": limit}
+        data = await self._get(endpoint, params)
+
+        holders = []
+        if isinstance(data, list):
+            for item in data:
+                try:
+                    holders.append(InstitutionalHolder(**item))
+                except Exception:
+                    continue
+        return holders
+
+

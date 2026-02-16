@@ -23,10 +23,26 @@ def all_tickers():
 @pytest.fixture
 def expected_tools():
     """Return expected tool list."""
-    return ["get_company_profile", "get_financial_ratios", "get_financial_statements"]
+    return [
+        "get_company_profile",
+        "get_financial_ratios",
+        "get_financial_statements",
+        "get_earnings_summary_via_search",
+        "get_revenue_segmentation",
+        "get_analyst_estimates",
+        "get_ownership_via_search",
+    ]
 
 
 @pytest.fixture
 def expected_sections():
     """Return expected report sections."""
-    return ["Company Overview", "Financial Health", "Recommendation"]
+    return [
+        "Executive Summary",
+        "Business Transformation",
+        "The Moat",
+        "Financial Performance",
+        "Outlook",
+        "Bear Case",
+        "Valuation",
+    ]

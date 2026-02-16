@@ -28,26 +28,31 @@ def faithfulness_evaluator(run: Run, example: Example) -> EvaluationResult:
 
     # LLM-as-Judge
     judge = ChatOpenAI(model="gpt-5-mini", temperature=0)
-    prompt = f"""You are evaluating if a financial report ONLY uses data from provided tool outputs.
+    prompt = f"""You are a senior editor evaluating a financial research report. 
+    
+    CONTEXT:
+    The report is written by an AI Analyst. 
+    - The Analyst MUST use the provided TOOL OUTPUTS for all **Specific Numbers** (Revenue, EPS, Margins, Dates, Holdings).
+    - The Analyst IS ALLOWED to use **General World Knowledge** for context (e.g., Product names like 'Blackwell' or 'Dojo', CEO names, general industry trends) even if not explicitly in the tools.
+    - The Analyst IS ALLOWED to make **Logical Inferences** (e.g., "Margins expanded" if the number went from 50% to 70%).
 
-TOOL OUTPUTS (ground truth data):
-{tool_outputs}
+    TOOL OUTPUTS (Ground Truth for Data):
+    {tool_outputs}
 
-REPORT TO EVALUATE:
-{final_output}
+    REPORT TO EVALUATE:
+    {final_output}
 
-TASK:
-1. Check if ALL claims/numbers in the report come from tool outputs
-2. Flag any information that appears fabricated or not in tool outputs
+    EVALUATION TASK:
+    1. **Data Integrity (STRICT):** Do the specific financial numbers in the report match the Tool Outputs? (Allow for rounding, e.g., $115.18B -> $115.2B).
+    2. **Hallucination Check (LOOSE):** Ignore "missing context" flags if the information is common industry knowledge (e.g., knowing NVDA makes GPUs). Only flag if the report invents *fake numbers* or *contradicts* the tools.
+    3. **Opinion vs Fact:** Allow the analyst to give price targets or strategic opinions if they are framed as analysis, not hard data.
 
-SCORING:
-- 1.0: All info comes from tool outputs, no hallucination
-- 0.7: Minor additions but core facts correct  
-- 0.5: Some unverifiable claims
-- 0.3: Significant fabrication
-- 0.0: Mostly hallucinated
+    SCORING RUBRIC:
+    - 1.0 (Pass): All financial numbers match the tools. Narrative and external context are plausible/correct.
+    - 0.7 (Minor Issue): Numbers are correct, but there is a minor contradiction in dates or a slight exaggeration of context.
+    - 0.0 (Fail): Specific financial numbers (Revenue, P/E, Cash Flow) are WRONG or hallucinated.
 
-Respond with ONLY a JSON: {{"score": <float>, "reason": "<brief explanation>"}}"""
+    Respond with ONLY a JSON: {{"score": <float>, "reason": "<brief explanation>"}}"""
 
     try:
         response = judge.invoke(prompt)
@@ -80,7 +85,10 @@ def completeness_evaluator(run: Run, example: Example) -> EvaluationResult:
 
     expected_sections = example.outputs.get("expected_sections", [])
     if not expected_sections:
-        expected_sections = ["Company Overview", "Financial Health", "Recommendation"]
+        expected_sections = [
+            "Executive Summary", "Business Transformation", "The Moat",
+            "Financial Performance", "Outlook", "Bear Case", "Valuation",
+        ]
 
     found = []
     missing = []
@@ -112,7 +120,11 @@ def tool_coverage_evaluator(run: Run, example: Example) -> EvaluationResult:
     """
     expected_tools = example.outputs.get("expected_tools", [])
     if not expected_tools:
-        expected_tools = ["get_company_profile", "get_financial_ratios", "get_financial_statements"]
+        expected_tools = [
+            "get_company_profile", "get_financial_ratios", "get_financial_statements",
+            "get_earnings_summary_via_search", "get_revenue_segmentation",
+            "get_analyst_estimates", "get_ownership_via_search",
+        ]
 
     called_tools = _get_called_tools(run)
 
