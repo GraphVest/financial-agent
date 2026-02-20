@@ -1,0 +1,1385 @@
+<!-- Open index.html in a browser. -->
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BriefMarket AI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="site-header__brand">
+      <p class="site-header__kicker">AI Newsroom</p>
+      <h1>BriefMarket AI</h1>
+      <p>Daily AI briefs for the market</p>
+    </div>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="index.html" aria-current="page">Today</a>
+      <a href="collections.html">Collections</a>
+      <a href="watchlist.html">Watchlist</a>
+      <a href="about.html">About</a>
+    </nav>
+
+    <p class="publish-badge" aria-label="Daily publish time">Publish Time: 6:00 AM PT</p>
+  </header>
+
+  <section class="ticker-search" aria-label="Search tickers">
+    <label class="sr-only" for="ticker-search">Search tickers</label>
+    <input id="ticker-search" type="search" placeholder="Search ticker symbol (example: AAPL, NVDA, TSLA)" />
+    <div class="ticker-search__chips" aria-hidden="true">
+      <span>Popular:</span>
+      <span class="ticker-chip">NVDA</span>
+      <span class="ticker-chip">AAPL</span>
+      <span class="ticker-chip">MSFT</span>
+      <span class="ticker-chip">TSLA</span>
+      <span class="ticker-chip">AMZN</span>
+    </div>
+  </section>
+
+  <main class="layout" id="today">
+    <section class="feed-area" aria-label="Daily article feed">
+      <section class="onboarding" aria-label="Onboarding">
+        <div>
+          <h2>New here? Read briefs in 2 minutes.</h2>
+          <p>Start with Signal, then AI Confidence, then open details only for stocks you actually follow.</p>
+        </div>
+        <div class="beginner-control">
+          <input class="sr-only" type="checkbox" id="beginner-mode" />
+          <label for="beginner-mode">Beginner Mode</label>
+
+        </div>
+      </section>
+
+      <section class="beginner-panel" aria-label="Beginner explanation">
+        <h3>How to read a brief quickly</h3>
+        <p><strong>Signal</strong> is plain-English direction. <strong>AI Confidence</strong> is model certainty, not
+          investment advice.</p>
+        <p>Start with higher confidence updates in sectors you know, then cross-check with filings and official company
+          releases.</p>
+      </section>
+
+      <section class="feed-controls" aria-label="Filtering and sorting">
+        <label class="sr-only" for="search">Search briefs</label>
+        <input id="search" type="search" placeholder="Search title, ticker, sector (visual only)" />
+
+        <div class="chip-row" role="group" aria-label="Filter chips">
+          <button type="button" class="chip chip--active">All</button>
+          <button type="button" class="chip">Bullish</button>
+          <button type="button" class="chip">Bearish</button>
+          <button type="button" class="chip">High Volatility</button>
+          <button type="button" class="chip">Earnings</button>
+          <button type="button" class="chip">Macro</button>
+          <button type="button" class="chip">Rumors</button>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-group__label">Signal Strength</span>
+          <div class="chip-row" role="group" aria-label="Signal strength filter">
+            <button type="button" class="chip chip--active" data-filter-signal="all">All</button>
+            <button type="button" class="chip" data-filter-signal="bullish">Bullish (70%+)</button>
+            <button type="button" class="chip" data-filter-signal="mixed">Mixed</button>
+            <button type="button" class="chip" data-filter-signal="bearish">Bearish</button>
+            <button type="button" class="chip" data-filter-signal="low">Low Confidence</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-group__label">Narrative Momentum</span>
+          <div class="chip-row" role="group" aria-label="Narrative momentum filter">
+            <button type="button" class="chip chip--active" data-filter-narrative="all">All</button>
+            <button type="button" class="chip" data-filter-narrative="strengthening">Strengthening</button>
+            <button type="button" class="chip" data-filter-narrative="weakening">Weakening</button>
+            <button type="button" class="chip" data-filter-narrative="reversal">Reversal</button>
+            <button type="button" class="chip" data-filter-narrative="fresh">Fresh Coverage</button>
+          </div>
+        </div>
+
+        <div class="view-toggle" role="tablist" aria-label="View toggle">
+          <input class="sr-only" type="radio" name="view" id="view-cards" checked />
+          <label for="view-cards" role="tab" aria-controls="article-feed">Cards</label>
+          <input class="sr-only" type="radio" name="view" id="view-compact" />
+          <label for="view-compact" role="tab" aria-controls="article-feed">Compact</label>
+        </div>
+      </section>
+
+      <section class="quick-start" aria-label="How to read quickly">
+        <article class="quick-start__item">
+          <h3>1. Read Signal first</h3>
+          <p>Bullish tilt means upside pressure, Cautious means risk is elevated, Mixed means unclear direction.</p>
+        </article>
+        <article class="quick-start__item">
+          <h3>2. Use confidence bands</h3>
+          <p><span class="confidence-mini">70%+</span> stronger signal, <span class="confidence-mini">60-69%</span>
+            medium signal, <span class="confidence-mini">under 60%</span> less certain.</p>
+        </article>
+        <article class="quick-start__item">
+          <h3>3. Open details only if needed</h3>
+          <p>Tap “Show key points” to view takeaways, what changed, and source types before diving deeper.</p>
+        </article>
+      </section>
+
+      <section class="edition-divider">
+        <h2>Daily Editions</h2>
+        <p>Today</p>
+      </section>
+
+      <section class="article-feed" id="article-feed" aria-label="Article cards">
+        <article class="article article--hero" data-signal="bullish" data-narrative="strengthening">
+          <p class="article__meta">Feb 12, 2026 • 6:02 AM <span class="article__dot">•</span> <span
+              class="article__tag">NVDA</span> <span class="article__sector">Semis</span> <span
+              class="narrative-badge narrative-badge--strengthening">Strengthening</span></p>
+          <h3>AI server demand outpaces guidance as <span class="eli15"
+              data-simple="Big cloud companies are buying chips earlier than expected">hyperscalers pull forward chip
+              orders</span></h3>
+          <p class="article__summary">Our model flags a stronger-than-expected near-term order cadence for AI
+            accelerators, with <span class="eli15"
+              data-simple="suppliers saying wait times are getting longer for memory and chip packaging">supplier checks
+              indicating tighter lead times across memory and packaging</span>.</p>
+          <p class="article__signals"><span class="signal signal--bull">Bullish tilt</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI Confidence 78% ▾</span></p>
+          <div class="confidence-breakdown">
+            <h4>Confidence Drivers</h4>
+            <ul>
+              <li class="driver-pos">Strong earnings revisions</li>
+              <li class="driver-pos">Supplier channel checks tightening</li>
+              <li class="driver-pos"><span class="eli15"
+                  data-simple="Most options traders are betting the stock goes up">Options flow skewed bullish</span>
+              </li>
+              <li class="driver-neg">Elevated valuation risk</li>
+              <li class="driver-neg">Short-term overbought RSI</li>
+            </ul>
+          </div>
+          <input class="sr-only" type="checkbox" id="expand-1" />
+          <label class="expand-label" for="expand-1">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Cloud buyers appear to be accelerating Q2 and Q3 hardware commitments.</li>
+              <li>Channel commentary suggests premium pricing resilience for top-tier GPUs.</li>
+              <li>Partner ecosystem signals a backlog in advanced packaging lanes.</li>
+              <li>Peer readthrough is positive for networking and power-management names.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> confidence increased from 71% to 78% after new supplier
+              commentary.</p>
+            <p class="sources">Sources: <span>Earnings call</span><span>Channel checks</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If hyperscaler orders slow next quarter</li>
+              <li>If gross margin guidance weakens</li>
+              <li>If China export restrictions tighten</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-1" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-1" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-1">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 50 &amp; 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>35x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>May 18</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>High</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Semis outperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-1">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Supply concerns</li>
+              <li><strong>Feb:</strong> AI demand accelerating</li>
+              <li><strong>Mar:</strong> Hyperscaler pull-forward orders</li>
+              <li><strong>Apr:</strong> Margin expansion expectations</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="article" data-signal="mixed" data-narrative="reversal">
+          <p class="article__meta">Feb 12, 2026 • 6:04 AM <span class="article__dot">•</span> <span
+              class="article__tag">TSLA</span> <span class="article__sector">Autos</span> <span
+              class="narrative-badge narrative-badge--reversal">Reversal</span></p>
+          <h3>Price cuts stabilize in key regions but <span class="eli15"
+              data-simple="the mix of cars sold still leans toward cheaper models with thinner profits">delivery mix
+              still skews lower-margin</span></h3>
+          <p class="article__summary">Regional pricing appears steady this week, yet mix shift toward entry trims keeps
+            margin outlook uneven.</p>
+          <p class="article__signals"><span class="signal signal--mixed">Mixed</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI Confidence 64% ▾</span></p>
+          <div class="confidence-breakdown">
+            <h4>Confidence Drivers</h4>
+            <ul>
+              <li class="driver-pos">Pricing stabilization in major markets</li>
+              <li class="driver-pos">Model refresh chatter improving traffic</li>
+              <li class="driver-neg">Lower-margin trim mix dominates</li>
+              <li class="driver-neg">Competitive EV landscape intensifying</li>
+            </ul>
+          </div>
+          <input class="sr-only" type="checkbox" id="expand-2" />
+          <label class="expand-label" for="expand-2">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Model refresh chatter supports showroom traffic in North America.</li>
+              <li>European discounting cooled compared with last month.</li>
+              <li>Lower-priced trims remain the largest unit contributor.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> signal moved from cautious to mixed on pricing stability.
+            </p>
+            <p class="sources">Sources: <span>Dealer checks</span><span>Registration data</span><span>Newswire</span>
+            </p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If new price cuts resume in Q2</li>
+              <li>If Model Y refresh disappoints on specs</li>
+              <li>If China EV competition erodes share faster</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-2" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-2" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-2">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Sideways (near 50 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>58x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 22</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>High</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Autos underperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-2">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Price war fears</li>
+              <li><strong>Feb:</strong> Pricing stabilization</li>
+              <li><strong>Mar:</strong> Model refresh speculation</li>
+              <li><strong>Apr:</strong> Margin recovery hopes</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="article" data-signal="mixed" data-narrative="strengthening">
+          <p class="article__meta">Feb 12, 2026 • 6:05 AM <span class="article__dot">•</span> <span
+              class="article__tag">AAPL</span> <span class="article__sector">Big Tech</span> <span
+              class="narrative-badge narrative-badge--strengthening">Strengthening</span></p>
+          <h3>Services momentum offsets <span class="eli15"
+              data-simple="people are keeping their phones and laptops longer before upgrading">softer device
+              replacement cycle</span> in latest checks</h3>
+          <p class="article__summary">Subscription and platform revenue trends remain healthy, buffering slower upgrade
+            activity in premium hardware.</p>
+          <p class="article__signals"><span class="signal signal--bull">Bullish tilt</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 69% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Services revenue growth consistent</li>
+            <li class="driver-pos">Hardware channel inventory balanced</li>
+            <li class="driver-neg">Device upgrade cycle slowing</li>
+            <li class="driver-neg">FX headwinds persist</li>
+          </ul>
+          </div>
+          id="expand-3" />
+          <label class="expand-label" for="expand-3">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Services attach rates expanded in three major regions.</li>
+              <li>Hardware channel inventory appears balanced.</li>
+              <li>FX pressure remains a manageable headwind.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> sentiment improved after stronger recurring-revenue
+              signals.</p>
+            <p class="sources">Sources: <span>10-Q</span><span>Earnings call</span><span>App data</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If App Store regulatory changes reduce fees</li>
+              <li>If iPhone replacement cycle drops below 3-year avg</li>
+              <li>If services growth decelerates below 10%</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-3" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-3" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-3">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>28x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>May 1</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Moderate</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Big Tech in line with S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-3">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Services growth focus</li>
+              <li><strong>Feb:</strong> Upgrade cycle concerns</li>
+              <li><strong>Mar:</strong> App Store regulatory risk</li>
+              <li><strong>Apr:</strong> Services momentum confirmed</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="mixed" data-narrative="weakening">
+          <p class="article__meta">Feb 12, 2026 • 6:06 AM <span class="article__dot">•</span> <span
+              class="article__tag">AMZN</span> <span class="article__sector">Consumer</span> <span
+              class="narrative-badge narrative-badge--weakening">Weakening</span></p>
+          <h3>Logistics efficiency gains continue while <span class="eli15"
+              data-simple="cloud sales are returning to a normal pace after a period of fast growth">cloud enterprise
+              deal flow normalizes</span></h3>
+          <p class="article__summary">Cost-to-serve metrics keep improving in retail, and cloud pipeline quality looks
+            stable after last quarter's acceleration.</p>
+          <p class="article__signals"><span class="signal signal--mixed">Mixed</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 61% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Logistics cost-to-serve improving</li>
+            <li class="driver-pos">AI workloads boosting cloud value</li>
+            <li class="driver-neg">Retail promo sensitivity remains</li>
+            <li class="driver-neg">Cloud deal pace normalizing</li>
+          </ul>
+          </div>
+          id="expand-4" />
+          <label class="expand-label" for="expand-4">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Delivery route density improved in major metro hubs.</li>
+              <li>AI workloads support higher-value cloud contracts.</li>
+              <li>Retail promotions remain margin-sensitive.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> confidence rose slightly on logistics data.</p>
+            <p class="sources">Sources: <span>Company filing</span><span>Industry surveys</span><span>Newswire</span>
+            </p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If cloud growth re-accelerates above 20%</li>
+              <li>If retail margins compress on promotions</li>
+              <li>If logistics cost gains plateau</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-4" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-4" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-4">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 50 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>42x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 24</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Moderate</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Consumer in line with S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-4">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Logistics gains</li>
+              <li><strong>Feb:</strong> Cloud normalization</li>
+              <li><strong>Mar:</strong> Retail margin pressure</li>
+              <li><strong>Apr:</strong> AI workload tailwinds</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="mixed" data-narrative="strengthening">
+          <p class="article__meta">Feb 12, 2026 • 6:07 AM <span class="article__dot">•</span> <span
+              class="article__tag">XOM</span> <span class="article__sector">Energy</span> <span
+              class="narrative-badge narrative-badge--strengthening">Strengthening</span></p>
+          <h3>Refining spreads improve as <span class="eli15"
+              data-simple="scheduled refinery shutdowns are reducing fuel supply, pushing margins up">maintenance cycle
+              tightens product availability</span></h3>
+          <p class="article__summary">Downstream margins show a short-term lift from planned outages and steadier demand
+            in transport fuels.</p>
+          <p class="article__signals"><span class="signal signal--bull">Bullish tilt</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 66% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Refining spreads widening</li>
+            <li class="driver-pos">Downstream margins lifting</li>
+            <li class="driver-neg">Upstream oil price sensitivity</li>
+            <li class="driver-neg">Macro slowdown risk</li>
+          </ul>
+          </div>
+          id="expand-5" />
+          <label class="expand-label" for="expand-5">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Product cracks widened across two benchmark regions.</li>
+              <li>Upstream sensitivity to oil price remains moderate.</li>
+              <li>Capital return outlook still well-supported.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> signal upgraded from mixed on refining data.</p>
+            <p class="sources">Sources: <span>Industry data</span><span>10-K</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If crude oil drops below $65/barrel</li>
+              <li>If refining margins narrow sharply</li>
+              <li>If OPEC+ increases production quotas</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-5" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-5" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-5">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 50 &amp; 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>12x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>May 2</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Low</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Energy outperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-5">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Oil price stability</li>
+              <li><strong>Feb:</strong> Refining margin expansion</li>
+              <li><strong>Mar:</strong> Maintenance tightening supply</li>
+              <li><strong>Apr:</strong> Capital return confidence</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="mixed" data-narrative="weakening">
+          <p class="article__meta">Feb 12, 2026 • 6:08 AM <span class="article__dot">•</span> <span
+              class="article__tag">META</span> <span class="article__sector">Internet</span> <span
+              class="narrative-badge narrative-badge--weakening">Weakening</span></p>
+          <h3>Ad pricing trends hold, but <span class="eli15"
+              data-simple="heavy spending on AI servers is squeezing short-term profits">compute spend keeps pressure on
+              near-term margin</span></h3>
+          <p class="article__summary">Ad demand appears resilient in performance channels while AI infrastructure
+            spending remains elevated.</p>
+          <p class="article__signals"><span class="signal signal--mixed">Mixed</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 63% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Ad pricing resilient</li>
+            <li class="driver-pos">Engagement metrics improving</li>
+            <li class="driver-neg">AI infrastructure spend elevated</li>
+            <li class="driver-neg">Capex above prior-year baseline</li>
+          </ul>
+          </div>
+          id="expand-6" />
+          <label class="expand-label" for="expand-6">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Engagement metrics improved in short-form surfaces.</li>
+              <li>Cost per impression stabilized versus last month.</li>
+              <li>Capex pace remains above prior-year baseline.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> no major signal change; confidence trimmed 1 point.</p>
+            <p class="sources">Sources: <span>Ad tracker</span><span>Earnings call</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If ad revenue growth slows below 15%</li>
+              <li>If AI capex guidance increases again</li>
+              <li>If user engagement trends reverse</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-6" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-6" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-6">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (near 50 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>22x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 30</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Moderate</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Internet in line with S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-6">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Ad demand recovery</li>
+              <li><strong>Feb:</strong> AI capex concerns</li>
+              <li><strong>Mar:</strong> Engagement gains</li>
+              <li><strong>Apr:</strong> Margin pressure narrative</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="mixed" data-narrative="strengthening">
+          <p class="article__meta">Feb 12, 2026 • 6:09 AM <span class="article__dot">•</span> <span
+              class="article__tag">JPM</span> <span class="article__sector">Financials</span> <span
+              class="narrative-badge narrative-badge--strengthening">Strengthening</span></p>
+          <h3>Net interest outlook steadies as <span class="eli15"
+              data-simple="fewer customers are moving their money to higher-rate accounts, stabilizing the bank's costs">deposit
+              migration pressure fades</span></h3>
+          <p class="article__summary">Deposit pricing competition has cooled, supporting more stable spread expectations
+            into next quarter.</p>
+          <p class="article__signals"><span class="signal signal--bull">Bullish tilt</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 67% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Deposit pricing competition cooling</li>
+            <li class="driver-pos">Commercial loan demand steady</li>
+            <li class="driver-neg">Rate cut uncertainty</li>
+            <li class="driver-neg">Credit quality tail risk</li>
+          </ul>
+          </div>
+          id="expand-7" />
+          <label class="expand-label" for="expand-7">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Commercial loan demand remains steady in mid-market accounts.</li>
+              <li>Credit quality trends remain contained.</li>
+              <li>Capital return flexibility stays intact.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> cautious flag removed after deposit beta update.</p>
+            <p class="sources">Sources: <span>Fed data</span><span>10-Q</span><span>Conference remarks</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If Fed cuts rates more aggressively than expected</li>
+              <li>If commercial loan defaults spike</li>
+              <li>If deposit outflows resume</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-7" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-7" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-7">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>11x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 11</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Low</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Financials outperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-7">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> NII stabilization</li>
+              <li><strong>Feb:</strong> Deposit migration easing</li>
+              <li><strong>Mar:</strong> Credit quality holding</li>
+              <li><strong>Apr:</strong> Capital return outlook positive</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="low" data-narrative="fresh">
+          <p class="article__meta">Feb 12, 2026 • 6:10 AM <span class="article__dot">•</span> <span
+              class="article__tag">PFE</span> <span class="article__sector">Healthcare</span> <span
+              class="narrative-badge narrative-badge--fresh">Fresh Coverage</span></p>
+          <h3>Pipeline milestones improve sentiment despite <span class="eli15"
+              data-simple="the company's income is settling back to normal after a period of unusually high sales">ongoing
+              revenue normalization</span></h3>
+          <p class="article__summary">Late-stage trial progress supports medium-term expectations, balancing near-term
+            pressure from legacy products.</p>
+          <p class="article__signals"><span class="signal signal--mixed">Mixed</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 60% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Late-stage pipeline advancing</li>
+            <li class="driver-pos">Cost actions on track</li>
+            <li class="driver-neg">Legacy product headwinds</li>
+            <li class="driver-neg">Revenue still normalizing</li>
+          </ul>
+          </div>
+          id="expand-8" />
+          <label class="expand-label" for="expand-8">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Two late-stage programs advanced enrollment timelines.</li>
+              <li>Commercial portfolio headwinds are moderating.</li>
+              <li>Cost actions remain on track.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> confidence rose from 57% on trial timeline clarity.</p>
+            <p class="sources">Sources: <span>Clinical registry</span><span>10-K</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If key trials report negative results</li>
+              <li>If revenue decline accelerates</li>
+              <li>If pipeline setbacks emerge</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-8" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-8" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-8">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Downtrend (below 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>11x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 29</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Moderate</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Healthcare underperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-8">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Revenue normalization</li>
+              <li><strong>Feb:</strong> Pipeline milestones</li>
+              <li><strong>Mar:</strong> Cost restructuring</li>
+              <li><strong>Apr:</strong> Fresh analyst coverage</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="bearish" data-narrative="weakening">
+          <p class="article__meta">Feb 12, 2026 • 6:11 AM <span class="article__dot">•</span> <span
+              class="article__tag">BA</span> <span class="article__sector">Industrials</span> <span
+              class="narrative-badge narrative-badge--weakening">Weakening</span></p>
+          <h3>Delivery cadence improves modestly, but <span class="eli15"
+              data-simple="key parts shortages are still slowing down airplane production">supplier bottlenecks remain
+              unresolved</span></h3>
+          <p class="article__summary">Factory throughput is improving in select programs, though key component
+            availability still limits full recovery pace.</p>
+          <p class="article__signals"><span class="signal signal--bear">Cautious</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 65% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Delivery cadence improving modestly</li>
+            <li class="driver-pos">Order book supportive long-term</li>
+            <li class="driver-neg">Engine and avionics gating production</li>
+            <li class="driver-neg">Supplier chain fragile</li>
+          </ul>
+          </div>
+          id="expand-9" />
+          <label class="expand-label" for="expand-9">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Monthly delivery count improved from the prior period.</li>
+              <li>Engine and avionics components remain gating items.</li>
+              <li>Order book stays supportive over long horizon.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> cautious signal maintained; confidence unchanged.</p>
+            <p class="sources">Sources: <span>Supply chain checks</span><span>Earnings call</span><span>Newswire</span>
+            </p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If supplier delays worsen further</li>
+              <li>If regulators impose new production limits</li>
+              <li>If order cancellations increase</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-9" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-9" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-9">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Downtrend (below 50 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>28x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 23</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>High</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Industrials in line with S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-9">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Production ramp hopes</li>
+              <li><strong>Feb:</strong> Supplier setbacks</li>
+              <li><strong>Mar:</strong> Delivery improvement</li>
+              <li><strong>Apr:</strong> Bottleneck persistence</li>
+            </ul>
+          </div>
+
+        </article>
+      </section>
+
+      <section class="edition-divider edition-divider--yesterday">
+        <p>Yesterday</p>
+      </section>
+
+      <section class="article-feed" aria-label="Yesterday articles" id="collections">
+        <article class="article" data-signal="bullish" data-narrative="strengthening">
+          <p class="article__meta">Feb 11, 2026 • 6:02 AM <span class="article__dot">•</span> <span
+              class="article__tag">MSFT</span> <span class="article__sector">Big Tech</span> <span
+              class="narrative-badge narrative-badge--strengthening">Strengthening</span></p>
+          <h3>Enterprise AI adoption remains broad as <span class="eli15"
+              data-simple="more users signing up for software subscriptions is making up for companies trying to cut costs">seat
+              expansion offsets optimization efforts</span></h3>
+          <p class="article__summary">Usage growth in productivity suites continues, with enterprise contracts showing
+            durable renewal behavior.</p>
+          <p class="article__signals"><span class="signal signal--bull">Bullish tilt</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 73% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Enterprise renewals above seasonal average</li>
+            <li class="driver-pos">AI copilot attach rates rising</li>
+            <li class="driver-neg">Cloud optimization still a factor</li>
+            <li class="driver-neg">Macro sensitivity in SMB</li>
+          </ul>
+          </div>
+          id="expand-10" />
+          <label class="expand-label" for="expand-10">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Commercial renewals tracked above seasonal average.</li>
+              <li>Cloud optimization cycle appears less severe.</li>
+              <li>AI copilot attach rates keep improving.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> confidence up 2 points after partner survey.</p>
+            <p class="sources">Sources: <span>Partner checks</span><span>10-Q</span><span>Conference call</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If enterprise renewal rates drop</li>
+              <li>If AI copilot adoption stalls</li>
+              <li>If cloud optimization deepens</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-10" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-10" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-10">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 50 &amp; 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>30x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 29</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Low</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Big Tech outperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-10">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Cloud optimization fears</li>
+              <li><strong>Feb:</strong> Copilot traction</li>
+              <li><strong>Mar:</strong> Enterprise renewal strength</li>
+              <li><strong>Apr:</strong> Seat expansion narrative</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="bullish" data-narrative="strengthening">
+          <p class="article__meta">Feb 11, 2026 • 6:03 AM <span class="article__dot">•</span> <span
+              class="article__tag">GOOGL</span> <span class="article__sector">Big Tech</span> <span
+              class="narrative-badge narrative-badge--strengthening">Strengthening</span></p>
+          <h3>Search monetization remains stable while <span class="eli15"
+              data-simple="the cloud business is becoming more profitable each quarter">cloud profitability trend
+              improves</span></h3>
+          <p class="article__summary">Ad conversion trends were steady in aggregate, and cloud margin momentum persisted
+            through the quarter.</p>
+          <p class="article__signals"><span class="signal signal--bull">Bullish tilt</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 70% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Search monetization stable</li>
+            <li class="driver-pos">Cloud margin improving</li>
+            <li class="driver-neg">AI competition intensifying</li>
+            <li class="driver-neg">Regulatory risk</li>
+          </ul>
+          </div>
+          id="expand-11" />
+          <label class="expand-label" for="expand-11">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Core search query mix stayed healthy.</li>
+              <li>Cloud cost controls showed incremental gains.</li>
+              <li>AI product launches driving developer traction.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> signal unchanged; confidence up 1 point.</p>
+            <p class="sources">Sources: <span>Earnings call</span><span>Ad tracker</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If search query volume declines</li>
+              <li>If cloud margin gains reverse</li>
+              <li>If antitrust rulings impact operations</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-11" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-11" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-11">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>21x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 24</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Moderate</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Big Tech in line with S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-11">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Search stability</li>
+              <li><strong>Feb:</strong> Cloud profitability gains</li>
+              <li><strong>Mar:</strong> AI product launches</li>
+              <li><strong>Apr:</strong> Developer traction</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="mixed" data-narrative="reversal">
+          <p class="article__meta">Feb 11, 2026 • 6:05 AM <span class="article__dot">•</span> <span
+              class="article__tag">PLTR</span> <span class="article__sector">AI Software</span> <span
+              class="narrative-badge narrative-badge--reversal">Reversal</span></p>
+          <h3>Commercial pipeline deepens, but <span class="eli15"
+              data-simple="the stock price has climbed so fast that even small disappointments could cause a pullback">valuation
+              sensitivity rises after sharp run</span></h3>
+          <p class="article__summary">Deal activity looks strong, especially with mid-sized enterprise accounts, though
+            expectations are now elevated.</p>
+          <p class="article__signals"><span class="signal signal--mixed">Mixed</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 62% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Commercial pipeline deepening</li>
+            <li class="driver-pos">Government demand stable</li>
+            <li class="driver-neg">Valuation stretched after rally</li>
+            <li class="driver-neg">Multiple expansion risk</li>
+          </ul>
+          </div>
+          id="expand-12" />
+          <label class="expand-label" for="expand-12">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Sales cycle duration improved in two core segments.</li>
+              <li>Government demand remains a stabilizer.</li>
+              <li>Multiple expansion increases pullback risk.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> confidence trimmed 3 points on valuation stretch.</p>
+            <p class="sources">Sources: <span>Company updates</span><span>Channel checks</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If commercial deal sizes shrink</li>
+              <li>If government contracts get delayed</li>
+              <li>If growth rate slows below 25%</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-12" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-12" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-12">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Overbought (well above 50 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>65x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>May 5</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Very High</dd>
+              <dt>Sector Momentum</dt>
+              <dd>AI Software outperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-12">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Government demand</li>
+              <li><strong>Feb:</strong> Commercial expansion</li>
+              <li><strong>Mar:</strong> Valuation stretch</li>
+              <li><strong>Apr:</strong> Pullback risk rising</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="low" data-narrative="weakening">
+          <p class="article__meta">Feb 11, 2026 • 6:06 AM <span class="article__dot">•</span> <span
+              class="article__tag">CVX</span> <span class="article__sector">Energy</span> <span
+              class="narrative-badge narrative-badge--weakening">Weakening</span></p>
+          <h3>Integrated model cushions <span class="eli15"
+              data-simple="oil and gas price changes, while the company keeps building new projects on schedule">commodity
+              swings as project execution stays steady</span></h3>
+          <p class="article__summary">Refining and chemicals diversification helped offset softer upstream realizations
+            this week.</p>
+          <p class="article__signals"><span class="signal signal--mixed">Mixed</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 59% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Project delivery on timeline</li>
+            <li class="driver-pos">Cash returns supported</li>
+            <li class="driver-neg">Commodity price sensitivity</li>
+            <li class="driver-neg">Lower upstream realizations</li>
+          </ul>
+          </div>
+          id="expand-13" />
+          <label class="expand-label" for="expand-13">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Project delivery timeline remains broadly intact.</li>
+              <li>Commodity sensitivity lower than pure upstream peers.</li>
+              <li>Cash returns remain supported at current strip.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> signal shifted from cautious to mixed on refining
+              strength.</p>
+            <p class="sources">Sources: <span>10-K</span><span>Industry prices</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If oil prices drop below $60/barrel</li>
+              <li>If project timelines slip</li>
+              <li>If chemicals margins compress</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-13" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-13" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-13">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Sideways (near 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>11x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>May 2</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Low</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Energy in line with S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-13">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Integrated model strength</li>
+              <li><strong>Feb:</strong> Upstream softness</li>
+              <li><strong>Mar:</strong> Chemicals diversification</li>
+              <li><strong>Apr:</strong> Commodity swing exposure</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="mixed" data-narrative="strengthening">
+          <p class="article__meta">Feb 11, 2026 • 6:07 AM <span class="article__dot">•</span> <span
+              class="article__tag">NFLX</span> <span class="article__sector">Media</span> <span
+              class="narrative-badge narrative-badge--strengthening">Strengthening</span></p>
+          <h3>Ad-tier subscriber expansion offsets <span class="eli15"
+              data-simple="uneven release schedules for new shows cause subscriber growth to bounce around">content
+              timing variability</span></h3>
+          <p class="article__summary">Advertising monetization gains continue, helping smooth periodic content-release
+            volatility.</p>
+          <p class="article__signals"><span class="signal signal--bull">Bullish tilt</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 68% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Ad-tier subscriber growth strong</li>
+            <li class="driver-pos">Global churn within range</li>
+            <li class="driver-neg">Content slate concentration risk</li>
+            <li class="driver-neg">Competition increasing</li>
+          </ul>
+          </div>
+          id="expand-14" />
+          <label class="expand-label" for="expand-14">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Ad-tier net adds exceeded model baseline.</li>
+              <li>Global churn remained within expected range.</li>
+              <li>Content slate concentration risk still present.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> confidence increased with stronger ad demand checks.</p>
+            <p class="sources">Sources: <span>App metrics</span><span>Earnings call</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If ad-tier growth decelerates</li>
+              <li>If major content misses expectations</li>
+              <li>If churn rate rises above forecast</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-14" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-14" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-14">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 50 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>32x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 17</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Moderate</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Media outperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-14">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Ad-tier launch momentum</li>
+              <li><strong>Feb:</strong> Subscriber growth</li>
+              <li><strong>Mar:</strong> Content pipeline concerns</li>
+              <li><strong>Apr:</strong> Ad monetization gains</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="low" data-narrative="weakening">
+          <p class="article__meta">Feb 11, 2026 • 6:08 AM <span class="article__dot">•</span> <span
+              class="article__tag">KO</span> <span class="article__sector">Consumer Staples</span> <span
+              class="narrative-badge narrative-badge--weakening">Weakening</span></p>
+          <h3>Pricing power moderates while volume trends improve in core markets</h3>
+          <p class="article__summary">Revenue mix is shifting toward healthier unit growth as inflationary pricing
+            tailwinds normalize.</p>
+          <p class="article__signals"><span class="signal signal--mixed">Mixed</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 58% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Volume trends improving</li>
+            <li class="driver-pos">Promotional intensity manageable</li>
+            <li class="driver-neg">Pricing power fading</li>
+            <li class="driver-neg">FX remains a headwind</li>
+          </ul>
+          </div>
+          id="expand-15" />
+          <label class="expand-label" for="expand-15">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Organic volume trend improved across two regions.</li>
+              <li>Promotional intensity remained manageable.</li>
+              <li>FX is the largest external swing factor.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> confidence unchanged.</p>
+            <p class="sources">Sources: <span>Company filing</span><span>Retail scanner</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If volume growth turns negative</li>
+              <li>If raw material costs spike</li>
+              <li>If FX headwinds intensify beyond guidance</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-15" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-15" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-15">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Sideways (near 50 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>22x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 22</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Low</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Consumer Staples underperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-15">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Pricing power concerns</li>
+              <li><strong>Feb:</strong> Volume improvement</li>
+              <li><strong>Mar:</strong> FX headwinds</li>
+              <li><strong>Apr:</strong> Mix shift toward value</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="low" data-narrative="fresh">
+          <p class="article__meta">Feb 11, 2026 • 6:09 AM <span class="article__dot">•</span> <span
+              class="article__tag">UBER</span> <span class="article__sector">Mobility</span> <span
+              class="narrative-badge narrative-badge--fresh">Fresh Coverage</span></p>
+          <h3>Ride and delivery engagement stays high, but <span class="eli15"
+              data-simple="the company is spending more on driver and rider bonuses to stay competitive">incentive spend
+              edges up</span></h3>
+          <p class="article__summary">Frequency metrics remain healthy, though local market promotions ticked up in
+            competitive corridors.</p>
+          <p class="article__signals"><span class="signal signal--mixed">Mixed</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 57% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Trip growth above seasonal trend</li>
+            <li class="driver-pos">Courier retention stable</li>
+            <li class="driver-neg">Take-rate pressure in select cities</li>
+            <li class="driver-neg">Incentive spend rising</li>
+          </ul>
+          </div>
+          id="expand-16" />
+          <label class="expand-label" for="expand-16">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Trip growth remained above seasonal trend.</li>
+              <li>Take-rate pressure appeared in select cities.</li>
+              <li>Courier retention remains stable.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> cautious flag removed on better retention data.</p>
+            <p class="sources">Sources: <span>App analytics</span><span>Company remarks</span><span>Newswire</span></p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If take-rate drops below 25%</li>
+              <li>If incentive costs accelerate</li>
+              <li>If autonomous ride-hail competition arrives sooner</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-16" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-16" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-16">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>30x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>May 7</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>Moderate</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Mobility in line with S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-16">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Engagement stability</li>
+              <li><strong>Feb:</strong> Competitive pressure</li>
+              <li><strong>Mar:</strong> Incentive spend uptick</li>
+              <li><strong>Apr:</strong> Fresh analyst initiation</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <article class="article" data-signal="bullish" data-narrative="strengthening">
+          <p class="article__meta">Feb 11, 2026 • 6:10 AM <span class="article__dot">•</span> <span
+              class="article__tag">AMD</span> <span class="article__sector">Semis</span> <span
+              class="narrative-badge narrative-badge--strengthening">Strengthening</span></p>
+          <h3>Data center mix improves as <span class="eli15"
+              data-simple="more regular companies (not just the biggest cloud firms) are buying new servers">enterprise
+              refresh demand broadens beyond hyperscalers</span></h3>
+          <p class="article__summary">Enterprise server activity picked up in channel checks, supporting a healthier
+            product mix outlook.</p>
+          <p class="article__signals"><span class="signal signal--bull">Bullish tilt</span><span class="confidence"
+              data-toggle aria-expanded="false" title="Click for breakdown">AI
+              Confidence 71% ▾</span></p>
+          <input class="sr-only" type="checkbox" <div class="confidence-breakdown">
+          <h4>Confidence Drivers</h4>
+          <ul>
+            <li class="driver-pos">Enterprise bookings improving</li>
+            <li class="driver-pos">Pricing discipline held</li>
+            <li class="driver-neg">PC recovery still gradual</li>
+            <li class="driver-neg">Hyperscaler concentration risk</li>
+          </ul>
+          </div>
+          id="expand-17" />
+          <label class="expand-label" for="expand-17">Show key points</label>
+          <div class="article__details">
+            <ul>
+              <li>Enterprise bookings improved quarter to date.</li>
+              <li>Pricing discipline held versus peer set.</li>
+              <li>PC recovery still gradual but positive.</li>
+            </ul>
+            <p><strong>What changed since yesterday:</strong> confidence rose from 67% to 71% after channel update.</p>
+            <p class="sources">Sources: <span>Distributor checks</span><span>Earnings call</span><span>Newswire</span>
+            </p>
+          </div>
+          <div class="signal-flip">
+            <h4>What Would Change the Signal?</h4>
+            <p class="signal-flip__sub">Signal Flip Conditions</p>
+            <ul>
+              <li>If enterprise server orders slow</li>
+              <li>If pricing discipline breaks vs. competitors</li>
+              <li>If data center share gains stall</li>
+            </ul>
+          </div>
+          <button class="stock-context-toggle" data-collapse="ctx-17" aria-expanded="false">Stock Context</button>
+          <button class="narrative-toggle" data-collapse="nar-17" aria-expanded="false">Narrative Timeline</button>
+          <div class="stock-context-panel" id="ctx-17">
+            <dl class="stock-context-grid">
+              <dt>Trend</dt>
+              <dd>Uptrend (above 50 &amp; 200 MA)</dd>
+              <dt>Valuation</dt>
+              <dd>28x forward earnings</dd>
+              <dt>Earnings Date</dt>
+              <dd>Apr 29</dd>
+              <dt>1-Mo Volatility</dt>
+              <dd>High</dd>
+              <dt>Sector Momentum</dt>
+              <dd>Semis outperforming S&amp;P</dd>
+            </dl>
+          </div>
+          <div class="narrative-panel" id="nar-17">
+            <h4>Narrative Timeline</h4>
+            <ul class="narrative-entries">
+              <li><strong>Jan:</strong> Data center focus</li>
+              <li><strong>Feb:</strong> Enterprise broadening</li>
+              <li><strong>Mar:</strong> Pricing discipline</li>
+              <li><strong>Apr:</strong> Share gain momentum</li>
+            </ul>
+          </div>
+
+        </article>
+      </section>
+    </section>
+
+    <aside class="context" aria-label="Market context" id="watchlist">
+      <section class="context-card">
+        <h2>Market Context</h2>
+        <p>Secondary signals to pair with your daily briefs.</p>
+      </section>
+
+      <section class="context-card">
+        <h3>Watchlist Tickers</h3>
+        <ul class="watchlist">
+          <li><span>AAPL</span><span class="pill pill--up">+0.8%</span></li>
+          <li><span>MSFT</span><span class="pill pill--up">+0.4%</span></li>
+          <li><span>NVDA</span><span class="pill pill--up">+2.1%</span></li>
+          <li><span>TSLA</span><span class="pill pill--down">-1.6%</span></li>
+          <li><span>AMZN</span><span class="pill pill--up">+0.5%</span></li>
+          <li><span>META</span><span class="pill pill--down">-0.7%</span></li>
+          <li><span>GOOGL</span><span class="pill pill--up">+0.6%</span></li>
+          <li><span>XOM</span><span class="pill pill--up">+0.3%</span></li>
+          <li><span>JPM</span><span class="pill pill--up">+0.2%</span></li>
+          <li><span>PFE</span><span class="pill pill--down">-0.4%</span></li>
+          <li><span>NFLX</span><span class="pill pill--up">+1.2%</span></li>
+          <li><span>AMD</span><span class="pill pill--up">+1.7%</span></li>
+        </ul>
+      </section>
+
+      <section class="context-card">
+        <h3>Trending Tickers</h3>
+        <ul class="trend-list">
+          <li>NVDA</li>
+          <li>AMD</li>
+          <li>TSLA</li>
+          <li>PLTR</li>
+          <li>BA</li>
+          <li>XOM</li>
+        </ul>
+        <h3 class="context-subhead">Sectors in Focus</h3>
+        <ul class="sector-list">
+          <li>Semis</li>
+          <li>Energy</li>
+          <li>Big Tech</li>
+          <li>Financials</li>
+          <li>Healthcare</li>
+        </ul>
+      </section>
+
+      <section class="context-card" id="about">
+        <h3>Explain</h3>
+        <p>These briefs are AI-generated summaries of market-moving developments and may contain errors or omissions.
+        </p>
+        <p>Use as a starting point only. Always verify with primary filings and official sources.</p>
+        <p class="disclaimer">Educational mock product. Not financial advice.</p>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <p>BriefMarket AI</p>
+    <nav aria-label="Footer links">
+      <a href="about.html">About</a>
+      <a href="#">Disclaimer</a>
+      <a href="#">Contact</a>
+    </nav>
+  </footer>
+  <script src="app.js"></script>
+</body>
+
+</html>

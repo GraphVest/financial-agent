@@ -1,0 +1,80 @@
+<!-- Open index.html in a browser. -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BriefMarket AI - Watchlist</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__brand">
+        <p class="site-header__kicker">AI Newsroom</p>
+        <h1>BriefMarket AI</h1>
+        <p>Daily AI briefs for the market</p>
+      </div>
+
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Today</a>
+        <a href="collections.html">Collections</a>
+        <a href="watchlist.html" aria-current="page">Watchlist</a>
+        <a href="about.html">About</a>
+      </nav>
+
+      <p class="publish-badge" aria-label="Daily publish time">Publish Time: 6:00 AM PT</p>
+    </header>
+
+    <section class="ticker-search" aria-label="Search tickers">
+      <label class="sr-only" for="ticker-search">Search tickers</label>
+      <input id="ticker-search" type="search" placeholder="Search ticker symbol (example: AAPL, NVDA, TSLA)" />
+      <div class="ticker-search__chips" aria-hidden="true">
+        <span>Popular:</span>
+        <span class="ticker-chip">NVDA</span>
+        <span class="ticker-chip">AAPL</span>
+        <span class="ticker-chip">MSFT</span>
+        <span class="ticker-chip">TSLA</span>
+        <span class="ticker-chip">AMZN</span>
+      </div>
+    </section>
+
+    <main class="page-main" id="watchlist">
+      <section class="page-hero">
+        <p class="page-hero__kicker">Your Context</p>
+        <h2>Watchlist</h2>
+        <p>Keep your key tickers in one place and skim the latest AI confidence shifts before market open.</p>
+      </section>
+
+      <section class="watchlist-board" aria-label="Watchlist overview">
+        <article class="watch-item"><h3>NVDA</h3><p>AI Confidence: <strong>78%</strong></p><span class="pill pill--up">+2.1%</span></article>
+        <article class="watch-item"><h3>AAPL</h3><p>AI Confidence: <strong>69%</strong></p><span class="pill pill--up">+0.8%</span></article>
+        <article class="watch-item"><h3>TSLA</h3><p>AI Confidence: <strong>64%</strong></p><span class="pill pill--down">-1.6%</span></article>
+        <article class="watch-item"><h3>AMZN</h3><p>AI Confidence: <strong>61%</strong></p><span class="pill pill--up">+0.5%</span></article>
+        <article class="watch-item"><h3>MSFT</h3><p>AI Confidence: <strong>73%</strong></p><span class="pill pill--up">+0.4%</span></article>
+        <article class="watch-item"><h3>XOM</h3><p>AI Confidence: <strong>66%</strong></p><span class="pill pill--up">+0.3%</span></article>
+        <article class="watch-item"><h3>JPM</h3><p>AI Confidence: <strong>67%</strong></p><span class="pill pill--up">+0.2%</span></article>
+        <article class="watch-item"><h3>PFE</h3><p>AI Confidence: <strong>60%</strong></p><span class="pill pill--down">-0.4%</span></article>
+      </section>
+
+      <section class="simple-grid" aria-label="Watchlist tips">
+        <article class="simple-card">
+          <h3>How to use this page</h3>
+          <p>Look for large confidence changes day to day. Those usually point to new information worth reading.</p>
+        </article>
+        <article class="simple-card">
+          <h3>Beginner tip</h3>
+          <p>If confidence is below 60%, treat the brief as a prompt to research, not a decision trigger.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>BriefMarket AI</p>
+      <nav aria-label="Footer links">
+        <a href="about.html">About</a>
+        <a href="#">Disclaimer</a>
+        <a href="#">Contact</a>
+      </nav>
+    </footer>
+  </body>
+</html>

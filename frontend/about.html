@@ -1,0 +1,77 @@
+<!-- Open index.html in a browser. -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BriefMarket AI - About</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__brand">
+        <p class="site-header__kicker">AI Newsroom</p>
+        <h1>BriefMarket AI</h1>
+        <p>Daily AI briefs for the market</p>
+      </div>
+
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Today</a>
+        <a href="collections.html">Collections</a>
+        <a href="watchlist.html">Watchlist</a>
+        <a href="about.html" aria-current="page">About</a>
+      </nav>
+
+      <p class="publish-badge" aria-label="Daily publish time">Publish Time: 6:00 AM PT</p>
+    </header>
+
+    <section class="ticker-search" aria-label="Search tickers">
+      <label class="sr-only" for="ticker-search">Search tickers</label>
+      <input id="ticker-search" type="search" placeholder="Search ticker symbol (example: AAPL, NVDA, TSLA)" />
+      <div class="ticker-search__chips" aria-hidden="true">
+        <span>Popular:</span>
+        <span class="ticker-chip">NVDA</span>
+        <span class="ticker-chip">AAPL</span>
+        <span class="ticker-chip">MSFT</span>
+        <span class="ticker-chip">TSLA</span>
+        <span class="ticker-chip">AMZN</span>
+      </div>
+    </section>
+
+    <main class="page-main" id="about">
+      <section class="page-hero">
+        <p class="page-hero__kicker">About BriefMarket AI</p>
+        <h2>What this product does</h2>
+        <p>BriefMarket AI turns market-moving updates into short daily briefs with plain-English signal labels and confidence scores.</p>
+      </section>
+
+      <section class="simple-grid" aria-label="About details">
+        <article class="simple-card">
+          <h3>Why this exists</h3>
+          <p>Most market tools are hard for beginners. This one is designed to help you scan quickly and understand context before researching deeper.</p>
+        </article>
+        <article class="simple-card">
+          <h3>How confidence works</h3>
+          <p>AI Confidence estimates certainty in the summary direction. It is not a guarantee and should never be used alone.</p>
+        </article>
+        <article class="simple-card">
+          <h3>What to verify</h3>
+          <p>Always verify with company filings, earnings calls, and trusted reporting before making any investing decision.</p>
+        </article>
+        <article class="simple-card">
+          <h3>Disclaimer</h3>
+          <p>This prototype is educational and uses mock data. It does not provide financial advice or recommendations.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>BriefMarket AI</p>
+      <nav aria-label="Footer links">
+        <a href="about.html" aria-current="page">About</a>
+        <a href="#">Disclaimer</a>
+        <a href="#">Contact</a>
+      </nav>
+    </footer>
+  </body>
+</html>

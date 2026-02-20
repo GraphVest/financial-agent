@@ -1,0 +1,91 @@
+<!-- Open index.html in a browser. -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BriefMarket AI - Collections</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__brand">
+        <p class="site-header__kicker">AI Newsroom</p>
+        <h1>BriefMarket AI</h1>
+        <p>Daily AI briefs for the market</p>
+      </div>
+
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Today</a>
+        <a href="collections.html" aria-current="page">Collections</a>
+        <a href="watchlist.html">Watchlist</a>
+        <a href="about.html">About</a>
+      </nav>
+
+      <p class="publish-badge" aria-label="Daily publish time">Publish Time: 6:00 AM PT</p>
+    </header>
+
+    <section class="ticker-search" aria-label="Search tickers">
+      <label class="sr-only" for="ticker-search">Search tickers</label>
+      <input id="ticker-search" type="search" placeholder="Search ticker symbol (example: AAPL, NVDA, TSLA)" />
+      <div class="ticker-search__chips" aria-hidden="true">
+        <span>Popular:</span>
+        <span class="ticker-chip">NVDA</span>
+        <span class="ticker-chip">AAPL</span>
+        <span class="ticker-chip">MSFT</span>
+        <span class="ticker-chip">TSLA</span>
+        <span class="ticker-chip">AMZN</span>
+      </div>
+    </section>
+
+    <main class="page-main" id="collections">
+      <section class="page-hero">
+        <p class="page-hero__kicker">Curated Packs</p>
+        <h2>Collections</h2>
+        <p>Pick a theme and read grouped briefs fast. Great for beginners who want structure instead of noise.</p>
+      </section>
+
+      <section class="simple-grid" aria-label="Collections grid">
+        <article class="simple-card">
+          <h3>Starter Pack</h3>
+          <p>Large cap names with more stable narratives and clearer earnings signals.</p>
+          <p class="simple-meta">AAPL · MSFT · JNJ · KO</p>
+        </article>
+        <article class="simple-card">
+          <h3>AI Core</h3>
+          <p>Daily movers tied to chips, cloud, and enterprise AI adoption.</p>
+          <p class="simple-meta">NVDA · AMD · MSFT · AMZN</p>
+        </article>
+        <article class="simple-card">
+          <h3>Macro Watch</h3>
+          <p>Rates, energy, and financial names that react quickly to policy headlines.</p>
+          <p class="simple-meta">XOM · CVX · JPM · BA</p>
+        </article>
+        <article class="simple-card">
+          <h3>Momentum Radar</h3>
+          <p>High-discussion tickers where sentiment can shift within a single session.</p>
+          <p class="simple-meta">TSLA · PLTR · NFLX · UBER</p>
+        </article>
+        <article class="simple-card">
+          <h3>Earnings Week</h3>
+          <p>Briefs focused on guidance changes, margin commentary, and estimate revisions.</p>
+          <p class="simple-meta">META · GOOGL · AMZN · PFE</p>
+        </article>
+        <article class="simple-card">
+          <h3>Dividend Lean</h3>
+          <p>Income-friendly names where consistency matters more than big daily swings.</p>
+          <p class="simple-meta">KO · PG · XOM · JNJ</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>BriefMarket AI</p>
+      <nav aria-label="Footer links">
+        <a href="about.html">About</a>
+        <a href="#">Disclaimer</a>
+        <a href="#">Contact</a>
+      </nav>
+    </footer>
+  </body>
+</html>
